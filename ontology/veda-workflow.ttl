@@ -1,0 +1,2839 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix v-s: <http://semantic-machines.com/veda/veda-schema/> .
+@prefix v-ui: <http://semantic-machines.com/veda/veda-ui/> .
+@prefix v-wf: <http://semantic-machines.com/veda/veda-workflow/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix v-df: <http://semantic-machines.com/veda/veda-docflow/> .
+@prefix cfg: <http://semantic-machines.com/veda/config/> .
+
+<http://semantic-machines.com/veda/veda-workflow>
+	rdfs:isDefinedBy v-wf: ;
+  rdf:type owl:Ontology ;
+  rdfs:label "Veda system workflow ontology"@en ;
+  rdfs:label "Онтология потоков работ системы Veda"@ru ;
+#  owl:DversionInfo "1.2" ;
+  v-s:loadPriority 7 ;
+.
+
+v-wf:appInboxUrl
+  rdf:type owl:DatatypeProperty ;
+  rdfs:domain v-s:AppInfo ;
+  rdfs:isDefinedBy v-s: ;
+  rdfs:label "app inbox url"@ru ;
+  rdfs:range xsd:string ;
+.
+
+v-wf:Net
+	rdf:type owl:Class ;
+	rdfs:subClassOf owl:Thing ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "Net"@en ;
+	rdfs:label "Сеть"@ru ;
+.
+v-wf:NetElement
+	rdf:type owl:Class ;
+	rdfs:subClassOf owl:Thing ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "Net element"@en ;
+	rdfs:label "Элемент сети"@ru ;
+.
+v-wf:Condition
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:NetElement ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "Condition"@en ;
+	rdfs:label "Состояние"@ru ;
+.
+v-wf:InputCondition
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Condition ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "Input condition"@en ;
+	rdfs:label "Входное состояние"@ru ;
+.
+v-wf:OutputCondition
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Condition ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "Output condition"@en ;
+	rdfs:label "Выходное состояние"@ru ;
+.
+v-wf:Task
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:NetElement ;	
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "Task"@en ;
+	rdfs:label "Задача"@ru ;	
+.
+v-wf:Flow
+	rdf:type owl:Class ;
+	rdfs:subClassOf owl:Thing ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "Flow"@en ;
+	rdfs:label "Поток"@ru ;
+.
+v-wf:ExecutorDefinition
+	rdf:type owl:Class ;
+	rdfs:subClassOf owl:Thing ;	
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "Executor definition"@en ;
+	rdfs:label "Выбор исполнителя"@ru ;
+.
+v-wf:TransitionBehavior
+	rdf:type owl:Class ;
+	rdfs:subClassOf owl:Thing ;	
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "Transition behavior"@en ;
+	rdfs:label "Тип перехода"@ru ;
+.
+
+v-wf:belongsTo
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "belongs to..."@en ;
+	rdfs:label "принадлежит к..."@ru ;
+	rdfs:domain v-wf:NetElement ;
+	rdfs:range v-wf:Net .
+
+v-wf:hasFlow
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "has flow"@en ;
+	rdfs:label "имеет поток"@ru ;
+	rdfs:domain v-wf:NetElement ;
+	rdfs:range v-wf:Flow ;
+.
+v-wf:consistsOf
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "Consists Of"@en ;
+	rdfs:label "Состоит из"@ru ;
+	rdfs:domain v-wf:Net ;
+	rdfs:range v-wf:NetElement ;
+	rdfs:range v-wf:Flow ;
+.
+
+v-wf:locationX
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "location X"@en ;
+	rdfs:label "позиция по Х"@ru ;
+	rdfs:domain v-wf:NetElement ;
+	rdfs:range xsd:integer ;
+.
+v-wf:locationY
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "location Y"@en ;
+	rdfs:label "позиция по Y"@ru ;
+	rdfs:domain v-wf:NetElement ;
+	rdfs:range xsd:integer ;
+.
+
+v-wf:XOR
+	rdf:type v-wf:TransitionBehavior ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "XOR"^^xsd:string ;
+.
+v-wf:OR
+	rdf:type v-wf:TransitionBehavior ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "OR"^^xsd:string ;
+.
+v-wf:AND
+	rdf:type v-wf:TransitionBehavior ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "AND"^^xsd:string ;
+.
+v-wf:None
+	rdf:type v-wf:TransitionBehavior ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "None"^^xsd:string ;
+.
+
+v-wf:subNet
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "subnet"@en ;
+	rdfs:label "подсеть"@ru ;
+	rdfs:domain v-wf:Task ;
+	rdfs:range v-wf:Net ;
+.
+v-wf:inputVariable
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "input variable"@en ;
+	rdfs:label "входная переменная"@ru ;
+	rdfs:domain v-wf:Net ;
+	rdfs:domain v-wf:Task ;
+	rdfs:range v-wf:VarDefine ;
+.
+v-wf:outputVariable
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "output variable"@en ;
+	rdfs:label "выходная переменная"@ru ;
+	rdfs:domain v-wf:Net ;
+	rdfs:domain v-wf:Task ;
+	rdfs:range v-wf:VarDefine ;
+.
+v-wf:localVariable
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "local variable"@en ;
+	rdfs:label "локальная переменная"@ru ;
+	rdfs:domain v-wf:Net ;
+	rdfs:domain v-wf:Task ;
+	rdfs:range v-wf:VarDefine ;
+.
+v-wf:taskDecisionForm
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "decision form"@en ;
+	rdfs:label "форма задачи"@ru ;
+	rdfs:domain v-wf:Task ;
+	rdfs:range v-wf:DecisionForm ;
+.
+v-wf:expectedResultType
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "expected result type"@en ;
+	rdfs:label "ожидаемый тип результата"@ru ;
+	rdfs:domain v-wf:Task ;
+	rdfs:range owl:Class ;
+.
+
+v-wf:startDecisionTransform
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "создание задачи"@ru ;
+	rdfs:domain v-wf:Task ;
+	rdfs:range v-wf:Transform ;
+.
+
+v-wf:completeDecisionTransform
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "обработка ответа на задачу"@ru ;
+	rdfs:domain v-wf:Task ;
+	rdfs:range v-wf:Transform ;
+.
+
+v-wf:inputOutputVariable
+	rdfs:isDefinedBy v-wf: ;
+	rdf:type rdf:Property ;
+	rdfs:label "input/output variable"@en ;
+	rdfs:label "входная / выходная переменная"@ru ;
+	rdfs:domain v-wf:Net ;
+	rdfs:domain v-wf:Task ;
+	rdfs:range v-wf:VarDefine ;
+.
+
+v-wf:split
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "split"@en ;
+	rdfs:label "разветвление"@ru ;
+	rdfs:domain v-wf:Task ;
+	rdfs:range v-wf:TransitionBehavior ;
+.
+
+v-wf:join
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "join"@en ;
+	rdfs:label "объединение"@ru ;
+	rdfs:domain v-wf:Task ;
+	rdfs:range v-wf:TransitionBehavior ;
+.
+
+v-wf:flowsInto
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "flows into"@en ;
+	rdfs:label "направление потока"@ru ;
+	rdfs:domain v-wf:Flow ;
+	rdfs:range v-wf:NetElement ;
+.
+
+v-wf:predicate
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "flow predicate"@en ;
+	rdfs:label "предикат потока"@ru ;
+	rdfs:domain v-wf:Flow ;
+	rdfs:range xsd:string ;
+.
+
+v-wf:startingMapping
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "starting mapping"@en ;
+	rdfs:label "стартовое преобразование"@ru ;
+	rdfs:domain v-wf:Task ;
+	rdfs:range v-wf:Mapping ;
+.
+
+v-wf:completedMapping
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "completed mapping"@en ;
+	rdfs:label "конечное преобразование"@ru ;
+	rdfs:domain v-wf:Task ;
+	rdfs:range v-wf:Mapping ;
+.
+
+v-wf:wosResultsMapping
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "work orders results mapping"@en ;
+	rdfs:label "преобразование результатов рабочих заданий"@ru ;
+	rdfs:domain v-wf:Task ;
+	rdfs:range v-wf:Mapping ;
+.
+
+v-wf:executor
+	rdf:type owl:ObjectProperty ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "executor"@en ;
+	rdfs:label "исполнитель"@ru ;
+	rdfs:domain v-wf:Task ;
+	rdfs:domain v-wf:WorkOrder ;
+	rdfs:domain v-wf:Process ;
+	rdfs:range v-wf:ExecutorDefinition ;
+	rdfs:range v-s:Appointment ;
+	rdfs:range v-s:Codelet ;
+.
+
+v-wf:executorExpression
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "executor choice expression"@en ;
+	rdfs:label "выражение выбора исполнителя"@ru ;
+	rdfs:domain v-wf:ExecutorDefinition ;
+	rdfs:range xsd:string ;
+.
+
+#------------------------------------------------------
+v-wf:VarDefine
+	rdf:type owl:Class ;
+	rdfs:subClassOf owl:Thing ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "Variable"@en ;
+	rdfs:label "Определение переменой"@ru ;
+.
+
+v-wf:varDefineName
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "variable name"@en ;
+	rdfs:label "имя определяемой переменной"@ru ;
+	rdfs:domain v-wf:VarDefine ;
+	rdfs:range xsd:string ;
+.
+
+v-wf:varDefineScope
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "определяемая область видимости"@ru ;
+	rdfs:domain v-wf:VarDefine ;
+        rdfs:range v-wf:Net ;
+        rdfs:range v-wf:Task ;
+.
+
+
+v-wf:Variable
+	rdf:type owl:Class ;
+	rdfs:subClassOf owl:Thing ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "Variable"@en ;
+	rdfs:label "Переменная"@ru ;
+.
+
+v-wf:variableName
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "variable name"@en ;
+	rdfs:label "имя переменной"@ru ;
+	rdfs:domain v-wf:Variable ;
+	rdfs:range xsd:string ;
+.
+
+v-wf:variableValue
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "variable value"@en ;
+	rdfs:label "значение переменной"@ru ;
+	rdfs:domain v-wf:Variable ;
+	rdfs:range rdfs:Resource ;
+.
+
+v-wf:variableScope
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "область видимости"@ru ;
+	rdfs:domain v-wf:Variable ;
+        rdfs:range v-wf:Process ;
+        rdfs:range v-wf:WorkItem ;
+.
+
+v-wf:complete
+	rdf:type v-wf:Variable ;
+	rdfs:isDefinedBy v-wf: ;
+	v-wf:variableName "complete" ;
+	v-wf:variableValue "yes" ;
+.
+
+v-wf:isTrace
+	rdf:type owl:DatatypeProperty ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "использовать трассировку"@ru ;
+	rdfs:domain v-wf:Process,  v-wf:StartForm ;
+	rdfs:range xsd:boolean ;
+.
+
+
+#------------------------------------------------------
+v-wf:netPropertySpecification1
+  rdf:type v-ui:StringPropertySpecification ;
+  rdfs:label "Спецификация свойства комментарий"@ru ;
+  rdfs:label "Property specification for comment"@en ;
+  v-ui:forClass v-wf:Net ;
+  v-ui:forProperty rdfs:comment, rdfs:label ;
+  v-ui:maxCardinality "1"^^xsd:nonNegativeInteger ;
+.
+
+v-wf:netPropertySpecification2
+  rdf:type v-ui:ObjectPropertySpecification ;
+  rdfs:label "Спецификация исполнителя для класса Задача"@ru ;
+  rdfs:label "Executor property specification for Task class"@en ;
+  v-ui:forClass v-wf:Net ;
+  v-ui:forProperty v-wf:inputVariable, v-wf:outputVariable, v-wf:inputOutputVariable, v-wf:localVariable ;
+  v-ui:queryPrefix "('rdf:type'=='v-wf:VarDefine')"^^xsd:string ;
+.
+
+v-wf:netPropertySpecification3
+  rdf:type v-ui:ObjectPropertySpecification ;
+  rdfs:label "Спецификация мэпперов для класса Задача"@ru ;
+  rdfs:label "Mapper property specification for Task class"@en ;
+  v-ui:forClass v-wf:Net ;
+  v-ui:forProperty v-wf:completedMapping ;
+  v-ui:queryPrefix "('rdf:type'=='v-wf:Mapping')"^^xsd:string ;
+.
+
+v-wf:SimpleNetTemplate
+  rdf:type v-ui:ClassTemplate ;
+	rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Шаблон для класса Сеть"@ru ;
+  rdfs:label "Template for Net class"@en ;
+  v-ui:template """
+<div>
+  <table id="taskTemplateProperties" class="table table-condensed table-hover properties-editor">
+  	<thead>
+  	  <tr>
+  		<td style="width:25%"><span about="v-wf:Net" property="rdfs:label"></span></td>
+  		<td><strong><span about="@" property="@"></span> <a href="#/@"><i class='glyphicon glyphicon-share-alt'></i></a></strong></td>
+  	  </tr>	 
+  	</thead>
+  	<tr onclick="javascript: $('#VClabel').show(); $('#viewVClabel').hide();">
+  		<td><span about="rdfs:label" property="rdfs:label"></span></td>
+		<td>
+			<veda-control id="VClabel" type="string" property="rdfs:label" class="properties-editor" style="display:none;"></veda-control>
+			<div id="viewVClabel" about="@" property="rdfs:label"></div>
+		</td>
+	</tr>
+	<tr onclick="javascript: $('#VCcomment').show(); $('#viewVCcomment').hide();">
+  		<td><span about="rdfs:comment" property="rdfs:label"></span></td>
+		<td>
+			<veda-control id="VCcomment" type="string" property="rdfs:comment" class="properties-editor" style="display:none;"></veda-control>
+			<div id="viewVCcomment" about="@" property="rdfs:comment"></div>
+		</td>
+	</tr>
+	<tr onclick="javascript: $('.VCinputVariable').show(); $('.viewVCinputVariable').hide();">
+  		<td><span about="v-wf:inputVariable" property="rdfs:label"></span></td>
+  		<td>
+  			<veda-control about="@" rel="v-wf:inputVariable" type="link" class="VCinputVariable fulltext dropdown create properties-editor" style="display:none;"></veda-control>
+  			<div class="VCinputVariable" rel="v-wf:inputVariable" template="v-ui:LabelTemplateWithEditLink" style="display:none;"></div>
+  			<div class="viewVCinputVariable" about="@" rel="v-wf:inputVariable" template="v-ui:LabelTemplateWithEditLink"></div>
+  		</td>
+	</tr>
+	<tr onclick="javascript: $('.VCoutputVariable').show(); $('.viewVCoutputVariable').hide();">
+  		<td><span about="v-wf:outputVariable" property="rdfs:label"></span></td>
+  		<td>
+  			<veda-control about="@" rel="v-wf:outputVariable" type="link" class="VCoutputVariable fulltext dropdown create properties-editor" style="display:none;"></veda-control>
+  			<div class="VCoutputVariable" rel="v-wf:outputVariable" template="v-ui:LabelTemplateWithEditLink" style="display:none;"></div>
+  			<div class="viewVCoutputVariable" about="@" rel="v-wf:outputVariable" template="v-ui:LabelTemplateWithEditLink"></div>
+  		</td>
+	</tr>
+	<tr onclick="javascript: $('.VClocalVariable').show(); $('.viewVClocalVariable').hide();">
+  		<td><span about="v-wf:localVariable" property="rdfs:label"></span></td>
+  		<td>
+  			<veda-control about="@" rel="v-wf:localVariable" type="link" class="VClocalVariable fulltext dropdown create properties-editor" style="display:none;"></veda-control>
+  			<div class="VClocalVariable" rel="v-wf:localVariable" template="v-ui:LabelTemplateWithEditLink" style="display:none;"></div>
+  			<div class="viewVClocalVariable" about="@" rel="v-wf:localVariable" template="v-ui:LabelTemplateWithEditLink"></div>
+  		</td>
+	</tr>			
+	<tr onclick="javascript: $('.VCinputOutputVariable').show(); $('.viewVCinputOutputVariable').hide();">
+  		<td><span about="v-wf:inputOutputVariable" property="rdfs:label"></span></td>
+  		<td>
+  			<veda-control about="@" rel="v-wf:inputOutputVariable" type="link" class="VCinputOutputVariable fulltext dropdown create properties-editor" style="display:none;"></veda-control>
+  			<div class="VCinputOutputVariable" rel="v-wf:inputOutputVariable" template="v-ui:LabelTemplateWithEditLink" style="display:none;"></div>
+  			<div class="viewVCinputOutputVariable" about="@" rel="v-wf:inputOutputVariable" template="v-ui:LabelTemplateWithEditLink"></div>
+  		</td>
+	</tr>
+	<tr onclick="javascript: $('.button-delete', $('.VCcompletedMapping').show()).show();">
+		<td>
+			<span about="v-wf:completedMapping" property="rdfs:label"></span>
+		</td>
+  		<td>
+  			<veda-control rel="v-wf:completedMapping" type="link" class="VCcompletedMapping fulltext dropdown create properties-editor" style="display:none;"></veda-control>
+  			<div rel="v-wf:completedMapping">
+	  			<div deleteButton="hide" class="VCcompletedMapping">
+	  				#<a href="#/@">
+			  			<span about="@" rel="v-wf:mapToVariable">
+							<span>
+								<span about="@" property="v-wf:varDefineName" template="v-ui:LabelTemplateWithEditLink"></span>
+							</span>
+						</span> =
+						<span about="@" property="v-wf:mappingExpression" template="v-ui:LabelTemplateWithEditLink"></span>
+						[<span about="@" property="@" template="v-ui:LabelTemplateWithEditLink"></span>]
+					</a>
+				<div>
+			</div>
+		</td>
+	</tr>	
+  </table>
+</div>
+<script>
+	$('#taskTemplateProperties [rel="v-wf:inputVariable"] [typeof="v-wf:VarDefine"]').draggable({
+		revert:true
+	});
+</script>  
+  """ ;
+.
+
+v-wf:NetTemplate
+  rdf:type v-ui:ClassTemplate ;
+	rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Шаблон для класса Сеть"@ru ;
+  rdfs:label "Template for Net class"@en ;
+  v-ui:forClass v-wf:Net ;
+  v-ui:template """
+<div class="workflow-wrapper">
+	<style>
+		#main {
+			margin-bottom: 0px;
+		}
+	</style>
+	<div class="row">
+		<div id="schema" class="col-md-8">
+			<div class="workflow-canvas-wrapper">
+				<div class="row" id="workflow-toolbar">
+					<div class="col-md-4">
+						<h4 id="workflow-net-name" style="margin-left:10px"></h4>
+					</div>
+					<div class="col-md-8">
+						<div class="btn-toolbar pull-right">
+						  <div class="btn-group">
+								<button type="button" class="btn btn-sm btn-default create-state create-task">
+									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+								</button>								
+								<button type="button" class="btn btn-sm btn-default create-state create-condition">
+									<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+								</button>
+								<button type="button" class="btn btn-sm btn-default edit-state">
+									<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+								</button>	
+								<button type="button" class="btn btn-sm btn-default copy-net-element">
+									<span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
+								</button>															
+								<button type="button" class="btn btn-sm btn-default delete-state">
+									<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+								</button>
+						  </div>
+						  <div class="btn-group">
+								<button type="button" class="btn btn-sm btn-default zoom-in">
+									<span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
+								</button>								
+								<button type="button" class="btn btn-sm btn-default zoom-default">
+									<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+								</button>				
+								<button type="button" class="btn btn-sm btn-default zoom-out">
+									<span class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span>
+								</button>						  
+						  </div>
+						  <div class="btn-group">
+								<button id="workflow-save-button" type="button" class="btn btn-sm btn-default" style="float:right;">
+									<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+								</button>
+								<button id="workflow-export-ttl" type="button" class="btn btn-sm btn-default" style="float:right;">
+									<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+								</button>
+						  </div>
+						  <div class="btn-group">
+							  <button id="full-width" class="btn btn-sm btn-default">
+								<span class=" glyphicon glyphicon-resize-full" aria-hidden="true"></span>
+							  </button>
+						  </div>
+						</div>
+					</div>
+				</div>
+				<div id="workflow-canvas">
+				</div>
+			</div>
+		</div>
+		<div id="props-col" class="col-md-4">
+			<h4>Элемент: <span id="props-head" property="rdfs:label"></span></h4><hr class="no-margin"/><br/>
+			<div id="props"></div>
+		</div>
+	</div>
+</div>
+
+<div id="workflow-context-menu" class="dropdown clearfix">
+    <ul class="workflow-context-menu-list" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
+    </ul>
+</div>
+
+<script type="text/javascript">
+var wrapper = $(".workflow-canvas-wrapper", template),
+	height = ( $("#copyright").offset().top - wrapper.offset().top - 10 ) + "px",
+	fullWidth = $("#full-width", template),
+	icon = $("span", fullWidth),
+	propsCol = $("#props-col", template),
+	schema = $("#schema", template);
+wrapper.css("height", height);
+propsCol.css("height", height);
+fullWidth.click(function () {
+	propsCol.toggle();
+	icon.toggleClass("glyphicon-resize-full glyphicon-resize-small");
+	schema.toggleClass("col-md-8 col-md-12");
+});
+jsWorkflow.ready(function () {
+    // Create a new workflow instance as workflow
+    var workflow = new jsWorkflow.Instance();
+
+    // Initialize workflow with workflow container id
+    var net = workflow.init('workflow-canvas', veda, individual, template, container);
+    
+    veda.net = net;
+    
+    template.on("remove", function () {
+    	delete veda.net
+  	});
+});
+</script>
+  """ ;
+.
+
+v-wf:ProcessTemplate
+  rdf:type v-ui:ClassTemplate ;
+	rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Шаблон для класса Процесс"@ru ;
+  rdfs:label "Template for Process"@en ;
+  v-ui:forClass v-wf:Process ;
+  v-ui:template """
+<div class="workflow-wrapper">
+	<style>
+		#main {
+			margin-bottom: 0px;
+		}
+	</style>
+	<div class="row">
+		<div id="schema" class="col-md-8">
+			<div class="workflow-canvas-wrapper">
+				<div class="row" id="workflow-toolbar">
+					<div class="col-md-4">
+						<h4 id="workflow-net-name" style="margin-left:10px"></h4>
+					</div>
+					<div class="col-md-8">
+						<div class="btn-toolbar pull-right">
+						  <div class="btn-group">
+							  <button type="button" class="btn btn-sm btn-default process-refresh">
+								  <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+							  </button>
+						  </div>
+						  <div class="btn-group">
+						  	  <button type="button" class="btn btn-sm btn-default to-net-editor">
+							      <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+						      </button>
+						  </div>
+						  <div class="btn-group">
+							  <button id="full-width" class="btn btn-sm btn-default">
+								<span class=" glyphicon glyphicon-resize-full" aria-hidden="true"></span>
+							  </button>
+						  </div>
+						</div>
+					</div>
+				</div>
+				<div id="workflow-canvas">
+				</div>
+			</div>
+		</div>
+		<div id="props-col" class="col-md-4">
+			<h4>Элемент: <span id="props-head" property="rdfs:label"></span></h4><hr class="no-margin"/><br/>
+			<div id="props"></div>
+		</div>
+		<div id="workflow-context-menu" class="dropdown clearfix">
+    		<ul class="workflow-context-menu-list" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
+    		</ul>
+		</div>		
+	</div>
+</div>
+
+<script type="text/javascript">
+var wrapper = $(".workflow-canvas-wrapper", template),
+	height = ( $("#copyright").offset().top - wrapper.offset().top - 10 ) + "px",
+	fullWidth = $("#full-width", template),
+	icon = $("span", fullWidth),
+	propsCol = $("#props-col", template),
+	schema = $("#schema", template);
+wrapper.css("height", height);
+propsCol.css("height", height);
+fullWidth.click(function () {
+	propsCol.toggle();
+	icon.toggleClass("glyphicon-resize-full glyphicon-resize-small");
+	schema.toggleClass("col-md-8 col-md-12");
+});
+jsWorkflow.ready(function () {
+    // Create a new workflow instance as workflow
+    var workflow = new jsWorkflow.Instance();
+
+    // Initialize workflow with workflow container id
+    var net = workflow.init('workflow-canvas', veda, individual, template, container);
+});
+</script>
+  """ ;
+.
+v-wf:taskPropertySpecification1
+  rdf:type v-ui:IntegerPropertySpecification ;
+  rdfs:label "Спецификация свойства locationX, locationY"@ru ;
+  rdfs:label "Property specification for locationX, locationY"@en ;
+  v-ui:forClass v-wf:Task ;
+  v-ui:forProperty v-wf:locationX, v-wf:locationY ;
+  v-ui:maxCardinality "1"^^xsd:nonNegativeInteger ;
+  v-ui:defaultIntegerValue "10"^^xsd:integer ;
+.
+v-wf:taskPropertySpecification2
+  rdf:type v-ui:StringPropertySpecification ;
+  rdfs:label "Спецификация свойства комментарий"@ru ;
+  rdfs:label "Property specification for comment"@en ;
+  v-ui:forClass v-wf:Task, v-wf:Condition, v-wf:InputCondition, v-wf:OutputCondition, v-wf:Flow ;
+  v-ui:forProperty rdfs:comment, rdfs:label ;
+  v-ui:maxCardinality "1"^^xsd:nonNegativeInteger ;
+.
+v-wf:taskPropertySpecification2
+  rdf:type v-ui:StringPropertySpecification ;
+  rdfs:label "Спецификация свойства комментарий"@ru ;
+  rdfs:label "Property specification for comment"@en ;
+  v-ui:forClass v-wf:Flow ;
+  v-ui:forProperty v-wf:predicate ;
+  v-ui:maxCardinality "1"^^xsd:nonNegativeInteger ;
+.
+v-wf:taskPropertySpecification3
+  rdf:type v-ui:ObjectPropertySpecification ;
+  rdfs:label "Спецификация свойства join, split"@ru ;
+  rdfs:label "Specification for join, split"@en ;
+  v-ui:forClass v-wf:Task ;
+  v-ui:forProperty v-wf:join, v-wf:split ;
+  v-ui:minCardinality "1"^^xsd:nonNegativeInteger ;
+  v-ui:maxCardinality "1"^^xsd:nonNegativeInteger ;
+  v-ui:optionObjectValue v-wf:AND ;
+  v-ui:optionObjectValue v-wf:OR ;
+  v-ui:optionObjectValue v-wf:XOR ;
+  v-ui:optionObjectValue v-wf:None ;
+  v-ui:defaultObjectValue v-wf:None ;
+.
+v-wf:taskPropertySpecification4
+  rdf:type v-ui:ObjectPropertySpecification ;
+  rdfs:label "Спецификация ожидаемого типа результата для класса Задача"@ru ;
+  rdfs:label "Expected result type property specification for Task class"@en ;
+  v-ui:forClass v-wf:Task ;
+  v-ui:forProperty v-wf:expectedResultType ;
+  v-ui:maxCardinality "1"^^xsd:nonNegativeInteger ;
+  v-ui:queryPrefix "('rdf:type'=='owl:Class')"^^xsd:string ;
+.
+v-wf:taskPropertySpecification5
+  rdf:type v-ui:ObjectPropertySpecification ;
+  rdfs:label "Спецификация ожидаемого типа результата для класса Задача"@ru ;
+  rdfs:label "Expected result type property specification for Task class"@en ;
+  v-ui:forClass v-wf:Task ;
+  v-ui:forProperty v-wf:expectedResultType ;
+  v-ui:maxCardinality "1"^^xsd:nonNegativeInteger ;
+  v-ui:queryPrefix "('rdf:type'=='owl:Class')"^^xsd:string ;
+.
+v-wf:taskPropertySpecification6
+  rdf:type v-ui:ObjectPropertySpecification ;
+  rdfs:label "Спецификация трансформаций для класса Задача"@ru ;
+  rdfs:label "Transform property specification for Task class"@en ;
+  v-ui:forClass v-wf:Task ;
+  v-ui:forProperty v-wf:startDecisionTransform, v-wf:completeDecisionTransform ;
+  v-ui:maxCardinality "1"^^xsd:nonNegativeInteger ;
+  v-ui:queryPrefix "('rdf:type'=='v-wf:Transform')"^^xsd:string ;
+.
+v-wf:taskPropertySpecification7
+  rdf:type v-ui:ObjectPropertySpecification ;
+  rdfs:label "Спецификация исполнителя для класса Задача"@ru ;
+  rdfs:label "Executor property specification for Task class"@en ;
+  v-ui:forClass v-wf:Task ;
+  v-ui:forProperty v-wf:executor ;
+  v-ui:maxCardinality "1"^^xsd:nonNegativeInteger ;
+  v-ui:queryPrefix "('rdf:type'=='v-wf:ExecutorDefinition' ||  'rdf:type'=='v-s:Codelet' ||  'rdf:type'=='v-s:Appointment')"^^xsd:string ;
+.
+v-wf:taskPropertySpecification8
+  rdf:type v-ui:ObjectPropertySpecification ;
+  rdfs:label "Спецификация исполнителя для класса Задача"@ru ;
+  rdfs:label "Executor property specification for Task class"@en ;
+  v-ui:forClass v-wf:Task ;
+  v-ui:forProperty v-wf:inputVariable, v-wf:outputVariable, v-wf:inputOutputVariable, v-wf:localVariable ;
+  v-ui:queryPrefix "('rdf:type'=='v-wf:VarDefine')"^^xsd:string ;
+.
+v-wf:taskPropertySpecification9
+  rdf:type v-ui:ObjectPropertySpecification ;
+  rdfs:label "Спецификация подсети для класса Задача"@ru ;
+  rdfs:label "Subnet property specification for Task class"@en ;
+  v-ui:forClass v-wf:Task ;
+  v-ui:forProperty v-wf:subNet ;
+  v-ui:maxCardinality "1"^^xsd:nonNegativeInteger ;
+  v-ui:queryPrefix "('rdf:type'=='v-wf:Net')"^^xsd:string ;
+.
+v-wf:taskPropertySpecification10
+  rdf:type v-ui:ObjectPropertySpecification ;
+  rdfs:label "Спецификация мэпперов для класса Задача"@ru ;
+  rdfs:label "Mapper property specification for Task class"@en ;
+  v-ui:forClass v-wf:Task ;
+  v-ui:forProperty v-wf:startingMapping, v-wf:completedMapping, v-wf:startingExecutorJournalMap, v-wf:completedExecutorJournalMap, v-wf:startingJournalMap, v-wf:completedJournalMap, v-wf:wosResultsMapping ;
+  v-ui:queryPrefix "('rdf:type'=='v-wf:Mapping')"^^xsd:string ;
+.
+v-wf:taskPropertySpecification11
+  rdf:type v-ui:ObjectPropertySpecification ;
+  rdfs:label "Спецификация исполнителя для класса Задача"@ru ;
+  rdfs:label "Executor property specification for Task class"@en ;
+  v-ui:forClass v-wf:Task ;
+  v-ui:forProperty v-wf:taskDecisionForm ;
+  v-ui:maxCardinality "1"^^xsd:nonNegativeInteger ;
+  v-ui:queryPrefix "('rdf:type'=='v-wf:DecisionForm')"^^xsd:string ;
+.
+v-wf:mappingPropertySpecification1
+  rdf:type v-ui:StringPropertySpecification ;
+  rdfs:label "Спецификация свойства мэппинг"@ru ;
+  rdfs:label "Property specification for Mapping"@en ;
+  v-ui:forClass v-wf:Mapping ;
+  v-ui:forProperty v-wf:mappingExpression ;
+  v-ui:maxCardinality "1"^^xsd:nonNegativeInteger ;
+.
+v-wf:variablesPropertySpecification1
+  rdf:type v-ui:StringPropertySpecification ;
+  rdfs:label "Спецификация свойства переменных"@ru ;
+  rdfs:label "Property specification for variables"@en ;
+  v-ui:forClass v-wf:VarDefine ;
+  v-ui:forProperty v-wf:varDefineName ;
+  v-ui:maxCardinality "1"^^xsd:nonNegativeInteger ;
+.
+v-wf:executorPropertySpecification1
+  rdf:type v-ui:StringPropertySpecification ;
+  rdfs:label "Спецификация свойства исполнителей"@ru ;
+  rdfs:label "Property specification for executors"@en ;
+  v-ui:forClass v-wf:ExecutorDefinition ;
+  v-ui:forProperty v-wf:executorExpression ;
+  v-ui:maxCardinality "1"^^xsd:nonNegativeInteger ;
+.
+v-wf:TaskTemplateAsProperties
+  rdf:type v-ui:ClassTemplate ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Шаблон для класса Задача"@ru ;
+  rdfs:label "Template for Task class"@en ;
+  v-ui:forClass v-wf:Task ;
+  v-ui:template """
+<div>
+  <table id="taskTemplateProperties" class="table table-condensed table-hover properties-editor">
+  	<thead>
+  	  <tr>
+  		<td style="width:25%"><span about="v-wf:NetElement" property="rdfs:label"></span></td>
+  		<td><strong><span about="@" property="@"></span> <a href="#/@"><i class='glyphicon glyphicon-share-alt'></i></a></strong></td>
+  	  </tr>	 
+  	</thead>
+  	<tr onclick="javascript: $('#VClabel').show(); $('#viewVClabel').hide();">
+  		<td><span about="rdfs:label" property="rdfs:label"></span></td>
+		<td>
+			<veda-control id="VClabel" type="string" property="rdfs:label" class="properties-editor" style="display:none;"></veda-control>
+			<div id="viewVClabel" about="@" property="rdfs:label"></div>
+		</td>
+	</tr>
+	<tr onclick="javascript: $('#VCcomment').show(); $('#viewVCcomment').hide();">
+  		<td><span about="rdfs:comment" property="rdfs:label"></span></td>
+		<td>
+			<veda-control id="VCcomment" type="string" property="rdfs:comment" class="properties-editor" style="display:none;"></veda-control>
+			<div id="viewVCcomment" about="@" property="rdfs:comment"></div>
+		</td>
+	</tr>
+	<tr onclick="javascript: $('#VCjoin').show(); $('#viewVCjoin').hide();">
+  		<td><span about="v-wf:join" property="rdfs:label"></span></td>
+  		<td>
+  			<veda-control id="VCjoin" rel="v-wf:join" type="objectSelect" class="fulltext dropdown properties-editor" style="display:none;"></veda-control>
+			<div id="viewVCjoin" about="@" rel="v-wf:join" template="v-ui:LabelTemplate"></div>
+  		</td>
+	</tr>
+	<tr onclick="javascript: $('#VCsplit').show(); $('#viewVCsplit').hide();">
+  		<td><span about="v-wf:split" property="rdfs:label"></span></td>
+  		<td>
+  			<veda-control id="VCsplit" rel="v-wf:split" type="objectSelect" class="fulltext dropdown properties-editor" style="display:none;"></veda-control>
+			<div id="viewVCsplit" about="@" rel="v-wf:split" template="v-ui:LabelTemplate"></div>
+  		</td>
+	</tr>
+	<tr onclick="javascript: $('.VCdecisionForm').show(); $('.viewVCdecisionForm').hide();">
+  		<td><span about="v-wf:taskDecisionForm" property="rdfs:label"></span></td>
+  		<td>
+  			<veda-control about="@" rel="v-wf:taskDecisionForm" type="link" class="VCdecisionForm fulltext dropdown create properties-editor" style="display:none;"></veda-control>
+  			<div class="VCdecisionForm" rel="v-wf:taskDecisionForm" template="v-ui:LabelTemplateWithEditLink" style="display:none;"></div>
+  			<div about="@" class="viewVCdecisionForm" about="@" rel="v-wf:taskDecisionForm" template="v-ui:LabelTemplateWithEditLink"></div>
+  		</td>
+	</tr>
+	<tr onclick="javascript: $('.VCstartDecisionTransform').show(); $('.viewVCstartDecisionTransform').hide();">
+		<td><span about="v-wf:startDecisionTransform" property="rdfs:label"></span></td>
+  		<td>
+  			<veda-control about="@" rel="v-wf:startDecisionTransform" type="link" class="VCstartDecisionTransform fulltext dropdown create properties-editor" style="display:none;"></veda-control>
+		    <div class="VCstartDecisionTransform" rel="v-wf:startDecisionTransform" template="v-ui:LabelTemplateWithEditLink" style="display:none;"></div>
+		    <div class="viewVCstartDecisionTransform" about="@" rel="v-wf:startDecisionTransform" template="v-ui:LabelTemplateWithEditLink"></div>
+  		</td>
+	</tr>
+	<tr onclick="javascript: $('.VCcompleteDecisionTransform').show(); $('.viewVCcompleteDecisionTransform').hide();">
+		<td><span about="v-wf:completeDecisionTransform" property="rdfs:label"></span></td>
+  		<td>
+  			<veda-control about="@" rel="v-wf:completeDecisionTransform" type="link" class="VCcompleteDecisionTransform fulltext dropdown create properties-editor" style="display:none;"></veda-control>
+		    <div class="VCcompleteDecisionTransform" rel="v-wf:completeDecisionTransform" template="v-ui:LabelTemplateWithEditLink" style="display:none;"></div>
+		    <div class="viewVCcompleteDecisionTransform" about="@" rel="v-wf:completeDecisionTransform" template="v-ui:LabelTemplateWithEditLink"></div>
+  		</td>
+	</tr>
+	<tr onclick="javascript: $('.VCexecutor').show(); $('.viewVCexecutor').hide();">
+  		<td><span about="v-wf:executor" property="rdfs:label"></span></td>
+  		<td>
+  			<veda-control about="@" rel="v-wf:executor" type="link" class="VCexecutor fulltext dropdown create properties-editor" style="display:none;"></veda-control>
+  			<div class="VCexecutor" rel="v-wf:executor" style="display:none;">
+	  			<div>
+	  				#<a href="#/@///edit">
+		  				<span property="v-wf:executorExpression"></span>
+		  				<span property="v-s:script"></span>
+		  				<span rel="v-s:employee" template="v-ui:LabelTemplate"></span>
+	  				</a>
+				</div>
+			</div>
+			<div class="viewVCexecutor" about="@" rel="v-wf:executor">
+	  			<div>
+	  				#<a href="#/@///edit">
+		  				<span property="v-wf:executorExpression"></span>
+		  				<span property="v-s:script"></span>
+		  				<span rel="v-s:employee" template="v-ui:LabelTemplate"></span>
+	  				</a>
+				</div>
+			</div>		
+  		</td>
+	</tr>	 
+	<tr onclick="javascript: $('.VCexpectedResultType').show(); $('.viewVCexpectedResultType').hide();">
+  		<td><span about="v-wf:expectedResultType" property="rdfs:label"></span></td>
+  		<td>
+  			<veda-control about="@" rel="v-wf:expectedResultType" type="link" class="VCexpectedResultType fulltext dropdown properties-editor" style="display:none;"></veda-control>
+  			<div class="VCexpectedResultType" rel="v-wf:expectedResultType" template="v-ui:LabelTemplate" style="display:none;"></div>
+  			<div class="viewVCexpectedResultType" about="@" rel="v-wf:expectedResultType" template="v-ui:LabelTemplate"></div>
+  		</td>
+	</tr>
+	<tr onclick="javascript: $('.VCinputVariable').show(); $('.viewVCinputVariable').hide();">
+  		<td><span about="v-wf:inputVariable" property="rdfs:label"></span></td>
+  		<td>
+  			<veda-control about="@" rel="v-wf:inputVariable" type="link" class="VCinputVariable fulltext dropdown create properties-editor" style="display:none;"></veda-control>
+  			<div class="VCinputVariable" rel="v-wf:inputVariable" template="v-ui:LabelTemplateWithEditLink" style="display:none;"></div>
+  			<div about="@" class="viewVCinputVariable" rel="v-wf:inputVariable" template="v-ui:LabelTemplateWithEditLink"></div>
+  		</td>
+	</tr>
+	<tr onclick="javascript: $('.VCoutputVariable').show(); $('.viewVCoutputVariable').hide();">
+  		<td><span about="v-wf:outputVariable" property="rdfs:label"></span></td>
+  		<td>
+  			<veda-control about="@" rel="v-wf:outputVariable" type="link" class="VCoutputVariable fulltext dropdown create properties-editor" style="display:none;"></veda-control>
+  			<div class="VCoutputVariable" rel="v-wf:outputVariable" template="v-ui:LabelTemplateWithEditLink" style="display:none;"></div>
+  			<div about="@" class="viewVCoutputVariable" rel="v-wf:outputVariable" template="v-ui:LabelTemplateWithEditLink"></div>
+  		</td>
+	</tr>		
+	<tr onclick="javascript: $('.VCinputOutputVariable').show(); $('.viewVCinputOutputVariable').hide();">
+  		<td><span about="v-wf:inputOutputVariable" property="rdfs:label"></span></td>
+  		<td>
+  			<veda-control about="@" rel="v-wf:inputOutputVariable" type="link" class="VCinputOutputVariable fulltext dropdown create properties-editor" style="display:none;"></veda-control>
+  			<div class="VCinputOutputVariable" rel="v-wf:inputOutputVariable" template="v-ui:LabelTemplateWithEditLink" style="display:none;"></div>
+  			<div about="@" class="viewVCinputOutputVariable" rel="v-wf:inputOutputVariable" template="v-ui:LabelTemplateWithEditLink"></div>
+  		</td>
+	</tr>
+	<tr onclick="javascript: $('.VClocalVariable').show(); javascript: $('.viewVClocalVariable').hide();">
+  		<td><span about="v-wf:localVariable" property="rdfs:label"></span></td>
+  		<td>
+  			<veda-control about="@" rel="v-wf:localVariable" type="link" class="VClocalVariable fulltext dropdown create properties-editor" style="display:none;"></veda-control>
+  			<div class="VClocalVariable" rel="v-wf:localVariable" template="v-ui:LabelTemplateWithEditLink" style="display:none;"></div>
+  			<div about="@" class="viewVClocalVariable" rel="v-wf:localVariable" template="v-ui:LabelTemplateWithEditLink"></div>
+  		</td>
+	</tr>
+	<tr onclick="javascript: $('#VCsubNet').show(); $('#viewVCsubNet').hide();">
+  		<td><span about="v-wf:subNet" property="rdfs:label"></span></td>
+  		<td>
+  			<veda-control id="VCsubNet" rel="v-wf:subNet" type="link" class="fulltext dropdown properties-editor" style="display:none;"></veda-control>
+  			<div class="VCsubNet" rel="v-wf:subNet" template="v-ui:LabelTemplate" style="display:none;"></div>
+  			<div class="viewVCsubNet" about="@" rel="v-wf:subNet" template="v-ui:LabelTemplate"></div>
+  		</td>
+	</tr>
+	<tr onclick="javascript: $('.button-delete', $('.VCstartingMapping').show()).show();">
+		<td>
+			<span about="v-wf:startingMapping" property="rdfs:label"></span>
+		</td>
+  		<td>
+  			<veda-control rel="v-wf:startingMapping" type="link" class="VCstartingMapping fulltext dropdown create properties-editor" style="display:none;"></veda-control>
+  			<div rel="v-wf:startingMapping">
+	  			<div deleteButton="hide" class="VCstartingMapping">
+	  				<p>
+						#<a href="#/@">
+							<span about="@" rel="v-wf:mapToVariable">
+								<span>
+									<span about="@" property="v-wf:varDefineName" template="v-ui:LabelTemplateWithEditLink"></span>
+								</span>
+							</span> =
+							<span about="@" property="v-wf:mappingExpression" template="v-ui:LabelTemplateWithEditLink"></span>
+						</a>
+					</p>
+				<div>
+			</div>
+		</td>
+	</tr>
+	<tr onclick="javascript: $('.button-delete', $('.VCcompletedMapping').show()).show();">
+		<td>
+			<span about="v-wf:completedMapping" property="rdfs:label"></span>
+		</td>
+  		<td>
+  			<veda-control rel="v-wf:completedMapping" type="link" class="VCcompletedMapping fulltext dropdown create properties-editor" style="display:none;"></veda-control>
+  			<div rel="v-wf:completedMapping">
+	  			<div deleteButton="hide" class="VCcompletedMapping">
+	  				<p>
+						#<a href="#/@">
+							<span about="@" rel="v-wf:mapToVariable">
+								<span>
+									<span about="@" property="v-wf:varDefineName" template="v-ui:LabelTemplateWithEditLink"></span>
+								</span>
+							</span> =
+							<span about="@" property="v-wf:mappingExpression" template="v-ui:LabelTemplateWithEditLink"></span>
+						</a>
+					</p>
+				<div>
+			</div>
+		</td>
+	</tr>	
+	<tr onclick="javascript: $('.button-delete', $('.VCstartingExecutorJournalMap').show()).show();">
+		<td>
+			<span about="v-wf:startingExecutorJournalMap" property="rdfs:label"></span>
+		</td>
+  		<td>
+  			<veda-control rel="v-wf:startingExecutorJournalMap" type="link" class="VCstartingExecutorJournalMap fulltext dropdown create properties-editor" style="display:none;"></veda-control>
+  			<div rel="v-wf:startingExecutorJournalMap">
+	  			<div deleteButton="hide" class="VCstartingExecutorJournalMap">
+	  				<p>
+						#<a href="#/@">
+							<span about="@" rel="v-wf:mapToVariable">
+								<span>
+									<span about="@" property="v-wf:varDefineName" template="v-ui:LabelTemplateWithEditLink"></span>
+								</span>
+							</span> =
+							<span about="@" property="v-wf:mappingExpression" template="v-ui:LabelTemplateWithEditLink"></span>
+						</a>
+					</p>
+				<div>
+			</div>
+		</td>
+	</tr>
+	<tr onclick="javascript: $('.button-delete', $('.VCcompletedExecutorJournalMap').show()).show();">
+		<td>
+			<span about="v-wf:completedExecutorJournalMap" property="rdfs:label"></span>
+		</td>
+  		<td>
+  			<veda-control rel="v-wf:completedExecutorJournalMap" type="link" class="VCcompletedExecutorJournalMap fulltext dropdown create properties-editor" style="display:none;"></veda-control>
+  			<div rel="v-wf:completedExecutorJournalMap">
+	  			<div deleteButton="hide" class="VCcompletedExecutorJournalMap">
+	  				<p>
+						#<a href="#/@">
+							<span about="@" rel="v-wf:mapToVariable">
+								<span>
+									<span about="@" property="v-wf:varDefineName" template="v-ui:LabelTemplateWithEditLink"></span>
+								</span>
+							</span> =
+							<span about="@" property="v-wf:mappingExpression" template="v-ui:LabelTemplateWithEditLink"></span>
+						</a>
+					</p>
+				<div>
+			</div>
+		</td>
+	</tr>		
+	<tr onclick="javascript: $('.button-delete', $('.VCstartingJournalMap').show()).show();">
+		<td>
+			<span about="v-wf:startingJournalMap" property="rdfs:label"></span>
+		</td>
+  		<td>
+  			<veda-control rel="v-wf:startingJournalMap" type="link" class="VCstartingJournalMap fulltext dropdown create properties-editor" style="display:none;"></veda-control>
+  			<div rel="v-wf:startingJournalMap">
+	  			<div deleteButton="hide" class="VCstartingJournalMap">
+		  			<p>
+						#<a href="#/@">
+							<span about="@" rel="v-wf:mapToVariable">
+								<span>
+									<span about="@" property="v-wf:varDefineName" template="v-ui:LabelTemplateWithEditLink"></span>
+								</span>
+							</span> =
+							<span about="@" property="v-wf:mappingExpression" template="v-ui:LabelTemplateWithEditLink"></span>
+						</a>
+					</p>
+				<div>
+			</div>
+		</td>
+	</tr>
+	<tr onclick="javascript: $('.button-delete', $('.VCcompletedJournalMap').show()).show();">
+		<td>
+			<span about="v-wf:completedJournalMap" property="rdfs:label"></span>
+		</td>
+  		<td>
+  			<veda-control rel="v-wf:completedJournalMap" type="link" class="VCcompletedJournalMap fulltext dropdown create properties-editor" style="display:none;"></veda-control>
+  			<div rel="v-wf:completedJournalMap">
+	  			<div deleteButton="hide" class="VCcompletedJournalMap">
+	  				<p>
+						#<a href="#/@">
+							<span about="@" rel="v-wf:mapToVariable">
+								<span>
+									<span about="@" property="v-wf:varDefineName" template="v-ui:LabelTemplateWithEditLink"></span>
+								</span>
+							</span> =
+							<span about="@" property="v-wf:mappingExpression" template="v-ui:LabelTemplateWithEditLink"></span>
+						</a>
+					</p>
+				<div>
+			</div>
+		</td>
+	</tr>
+	<tr onclick="javascript: $('.button-delete', $('.VCwosResultsMapping').show()).show();">
+		<td>
+			<span about="v-wf:wosResultsMapping" property="rdfs:label"></span>
+		</td>
+  		<td>
+  			<veda-control rel="v-wf:wosResultsMapping" type="link" class="VCwosResultsMapping fulltext dropdown create properties-editor" style="display:none;"></veda-control>
+  			<div rel="v-wf:wosResultsMapping">
+	  			<div deleteButton="hide" class="VCwosResultsMapping">
+	  				<p>
+						#<a href="#/@">
+							<span about="@" rel="v-wf:mapToVariable">
+								<span>
+									<span about="@" property="v-wf:varDefineName" template="v-ui:LabelTemplateWithEditLink"></span>
+								</span>
+							</span> =
+							<span about="@" property="v-wf:mappingExpression" template="v-ui:LabelTemplateWithEditLink"></span>
+						</a>
+					</p>
+				<div>
+			</div>
+		</td>
+	</tr>
+  	<tr>
+		<td about="v-wf:hasFlow" property="rdfs:label"></td>
+		<td about="@" rel="v-wf:hasFlow">
+			<div>
+				<p>
+					#<a href="#/@">
+						<strong><span about="@" rel="v-wf:flowsInto" template="v-ui:LabelTemplate"></span></strong>
+						[<span about="@" property="v-wf:predicate"></span>]
+					</a>
+				</p>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td about="v-wf:locationX" property="rdfs:label"></td>
+		<td about="@" property="v-wf:locationX"></td>
+	</tr>
+	<tr>
+		<td about="v-wf:locationY" property="rdfs:label"></td>
+		<td about="@" property="v-wf:locationY"></td>
+	</tr>
+  </table>
+</div>
+<script>
+  function handler (property_uri, values) {
+    if (property_uri === "v-wf:join" || property_uri === "v-wf:split") {      
+       var $state = $('#' + veda.Util.escape4$(individual.id));
+       $state.removeClass('split-and').removeClass('split-or').removeClass('split-xor');
+       $state.removeClass('join-and').removeClass('join-or').removeClass('join-xor');
+       $state.addClass(veda.net.getSplitJoinType('join', individual));
+       $state.addClass(veda.net.getSplitJoinType('split', individual));
+       veda.net.updateSVGBackground($state);
+    }
+    if (property_uri === "rdfs:label") {
+    	var $state = $('#' + veda.Util.escape4$(individual.id));
+    	$('.state-name', $state).html(values);    	
+    }
+  }
+  individual.on("individual:propertyModified", handler);
+  
+  template.on("remove", function () {
+    individual.off("individual:propertyModified");
+  });
+  
+  $('#taskTemplateProperties > tbody > tr > td > span[about]').each(function () {
+  	 if (!individual.hasValue($(this).attr('about'))) {
+  	 	$(this).parent().parent().appendTo($('#taskTemplateProperties'));
+  	 }
+  });
+</script>
+  """ ;
+  .
+  
+v-wf:ConditionTemplateAsProperties
+  rdf:type v-ui:ClassTemplate ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Шаблон для класса Условие"@ru ;
+  rdfs:label "Template for Condition class"@en ;
+  v-ui:forClass v-wf:Condition, v-wf:InputCondition, v-wf:OutputCondition ;
+  v-ui:template """
+<div>
+  <table id="taskTemplateProperties" class="table table-condensed table-hover properties-editor">
+  	<thead>
+  	  <tr>
+  		<td style="width:25%"><span about="v-wf:NetElement" property="rdfs:label"></span></td>
+  		<td><strong><span about="@" property="@"></span> <a href="#/@"><i class='glyphicon glyphicon-share-alt'></i></a></strong></td>
+  	  </tr>	 
+  	</thead>
+  	<tr onclick="javascript: $('#VClabel').show(); $('#viewVClabel').hide();">
+  		<td><span about="rdfs:label" property="rdfs:label"></span></td>
+		<td>
+			<veda-control id="VClabel" type="string" property="rdfs:label" class="properties-editor" style="display:none;"></veda-control>
+			<div id="viewVClabel" about="@" property="rdfs:label"></div>
+		</td>
+	</tr>
+	<tr onclick="javascript: $('#VCcomment').show(); $('#viewVCcomment').hide();">
+  		<td><span about="rdfs:comment" property="rdfs:label"></span></td>
+		<td>
+			<veda-control id="VCcomment" type="string" property="rdfs:comment" class="properties-editor" style="display:none;"></veda-control>
+			<div id="viewVCcomment" about="@" property="rdfs:comment"></div>
+		</td>
+	</tr>
+	<tr>
+		<td about="v-wf:hasFlow" property="rdfs:label"></td>
+		<td about="@" rel="v-wf:hasFlow">
+			<div>
+				#<a href="#/@">
+				    <strong><span about="@" rel="v-wf:flowsInto" template="v-ui:LabelTemplate"></span></strong>
+				    [<span about="@" property="v-wf:predicate"></span>]
+			    </a>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td about="v-wf:locationX" property="rdfs:label"></td>
+		<td about="@" property="v-wf:locationX"></td>
+	</tr>
+	<tr>
+		<td about="v-wf:locationY" property="rdfs:label"></td>
+		<td about="@" property="v-wf:locationY"></td>
+	</tr>
+  </table>
+</div>
+<script>
+  function handler (property_uri, values) {
+    if (property_uri === "rdfs:label") {
+    	var $state = $('#' + veda.Util.escape4$(individual.id));
+    	$('.state-name', $state).html(values);    	
+    }
+  }
+  individual.on("individual:propertyModified", handler);
+  
+  template.on("remove", function () {
+    individual.off("individual:propertyModified");
+  });
+</script>
+  """ ;
+  .
+  
+v-wf:FlowTemplateAsProperties
+  rdf:type v-ui:ClassTemplate ;
+	rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Шаблон для класса Поток"@ru ;
+  rdfs:label "Template for Flow class"@en ;
+  v-ui:forClass v-wf:Flow ;
+  v-ui:template """
+<div>
+  <table id="taskTemplateProperties" class="table table-condensed table-hover properties-editor">
+  	<thead>
+  	  <tr>
+  		<td style="width:25%"><span about="v-wf:Net" property="rdfs:label"></span></td>
+  		<td><strong><span about="@" property="@"></span> <a href="#/@"><i class='glyphicon glyphicon-share-alt'></i></a></strong></td>
+  	  </tr>	 
+  	</thead>
+  	<tr onclick="javascript: $('#VClabel').show(); $('#viewVClabel').hide();">
+  		<td><span about="rdfs:label" property="rdfs:label"></span></td>
+		<td>
+			<veda-control id="VClabel" type="string" property="rdfs:label" class="properties-editor" style="display:none;"></veda-control>
+			<div id="viewVClabel" about="@" property="rdfs:label"></div>
+		</td>
+	</tr>
+	<tr onclick="javascript: $('#VCcomment').show(); $('#viewVCcomment').hide();">
+  		<td><span about="rdfs:comment" property="rdfs:label"></span></td>
+		<td>
+			<veda-control id="VCcomment" type="string" property="rdfs:comment" class="properties-editor" style="display:none;"></veda-control>
+			<div id="viewVCcomment" about="@" property="rdfs:comment"></div>
+		</td>
+	</tr>
+	<tr onclick="javascript: $('#VCpredicate').show().trigger('edit'); $('#viewVCpredicate').hide();">
+  		<td><span about="v-wf:predicate" property="rdfs:label"></span></td>
+		<td>
+			<veda-control id="VCpredicate" type="source" mode="javascript" property="v-wf:predicate" class="properties-editor" style="display:none;width:75%"></veda-control>
+			<div id="viewVCpredicate" about="@" property="v-wf:predicate"></div>
+		</td>
+	</tr>		
+	<tr>
+  		<td><span about="v-wf:flowsInto" property="rdfs:label"></span></td>
+		<td>
+			<strong><span about="@" rel="v-wf:flowsInto" template="v-ui:LabelTemplate"></span></strong>
+		</td>
+	</tr>
+  </table>
+</div>
+<script>
+  function handler (property_uri, values) 
+  {
+    if (property_uri === "rdfs:label") 
+    {
+      if (veda.net)
+      {
+        $.each(veda.net.getAllConnections(), function (idx, connection) 
+        {
+           if(connection.id === individual.id) {
+              var value = (typeof values[0] === 'undefined')?'':values[0];
+           	  if (connection.getOverlay('flowLabel') == undefined) {
+           	    connection.addOverlay(["Label", { label: value, location:0.5, id: "flowLabel"} ]);
+           	  } else {
+           	    connection.getOverlay('flowLabel').setLabel(value);
+           	  }
+           }
+        });
+      }
+    }
+  }
+  individual.on("individual:propertyModified", handler);
+  
+  template.on("remove", function () {
+    individual.off("individual:propertyModified");
+  });
+</script>  
+  """ ;
+.
+  
+v-wf:ProcessPropsTemplate
+  rdf:type v-ui:ClassTemplate ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Шаблон для класса -Рабочее задание-"@ru ;
+  rdfs:label "Template for Work order class"@en ;
+  v-ui:template """
+<div>
+	<div id="executor">
+		<em><h5 about="v-wf:executor" property="rdfs:label"></h5></em>
+		<ol><li rel="v-wf:executor" template="v-ui:ClassNameLabelTemplate"></li></ol>
+		<hr>
+	</div>
+	<div id="localVariable">
+		<em><h5 about="v-wf:localVariable" property="rdfs:label"></h5></em>
+		<span rel="v-wf:localVariable" template="v-wf:VariableTemplate"></span>
+		<hr>
+	</div>
+	<div id="inVars">
+		<em><h5 about="v-wf:inVars" property="rdfs:label"></h5></em>
+		<span rel="v-wf:inVars" template="v-wf:VariableTemplate"></span>
+		<hr>
+	</div>
+	<div id="outVars">
+		<em><h5 about="v-wf:outVars" property="rdfs:label"></h5></em>
+		<span rel="v-wf:outVars" template="v-wf:VariableTemplate"></span>
+	</div>
+	<div id="localVars">
+		<em><h5 about="v-wf:localVars" property="rdfs:label"></h5></em>
+		<span rel="v-wf:localVars" template="v-wf:VariableTemplate"></span>
+		<hr>
+	</div>
+	<div id="traceJournal">
+		<em><h5 about="v-wf:traceJournal" property="rdfs:label"></h5></em>
+		<span rel="v-wf:traceJournal" template="v-ui:LabelLinkTemplate"></span>
+		<hr>
+	</div>		
+</div>
+<script>
+	if (!individual.hasValue("v-wf:executor")) $("#executor", template).remove();
+	if (!individual.hasValue("v-wf:localVariable")) $("#localVariable", template).remove();
+	if (!individual.hasValue("v-wf:inVars")) $("#inVars", template).remove();
+	if (!individual.hasValue("v-wf:outVars")) $("#outVars", template).remove();
+	if (!individual.hasValue("v-wf:traceJournal")) $("#traceJournal", template).remove();
+	if (!individual.hasValue("v-wf:localVars")) $("#localVars", template).remove();
+</script>
+  """
+.
+v-wf:WorkItemTemplate
+  rdf:type v-ui:ClassTemplate ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Шаблон для класса - Рабочий элемент"@ru ;
+  rdfs:label "Template for Work order class"@en ;
+  v-ui:forClass v-wf:WorkItem ;
+  v-ui:template """
+<div>
+	<h4><span about="v-wf:WorkItem" property="rdfs:label"></span></h4>
+	<h5><strong><span about="@" property="@"></span> <a href="#/@"><i class='glyphicon glyphicon-share-alt'></i></a></strong></h5>
+	<hr>
+	<div id="inVars">
+		<em><h5 about="v-wf:inVars" property="rdfs:label"></h5></em>
+		<span rel="v-wf:inVars" template="v-wf:VariableTemplate"></span>
+		<hr>
+	</div>
+	<div id="outVars">
+		<em><h5 about="v-wf:outVars" property="rdfs:label"></h5></em>
+		<span rel="v-wf:outVars" template="v-wf:VariableTemplate"></span>
+		<hr>
+	</div>
+	<div id="workOrderList">
+		<em><h5 about="v-wf:workOrderList" property="rdfs:label"></h5></em>
+		<span rel="v-wf:workOrderList" template="v-wf:WorkOrderTemplate"></span>
+		<hr>		
+	</div>
+	<div id="traceJournal">
+		<em><h5 about="v-wf:traceJournal" property="rdfs:label"></h5></em>
+		<span rel="v-wf:traceJournal" template="v-ui:LabelLinkTemplate"></span>
+		<hr>
+	</div>	
+</div>
+<script>
+	if (!individual.hasValue("v-wf:inVars")) $("#inVars", template).remove();
+	if (!individual.hasValue("v-wf:outVars")) $("#outVars", template).remove();
+	if (!individual.hasValue("v-wf:workOrderList")) $("#workOrderList", template).remove();
+	if (!individual.hasValue("v-wf:traceJournal")) $("#traceJournal", template).remove();
+</script>
+  """ ;
+  .
+
+v-wf:VariableTemplate
+  rdf:type v-ui:ClassTemplate ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Шаблон для класса Переменная"@ru ;
+  rdfs:label "Template for Variable class"@en ;
+  v-ui:forClass v-wf:Variable ;
+  v-ui:template """
+<span>
+	<strong><span property="v-wf:variableName"></span> =</strong>
+	<ul id="values"></ul>
+	<div id="variableScope">
+		<em about="v-wf:variableScope" property="rdfs:label"></em>
+		<ul><li rel="v-wf:variableScope" template="v-ui:ClassNameLabelTemplate"></li></ul>
+	</div>
+</span>
+<script type="text/javascript">
+	if (!individual.hasValue("v-fw:variableScope")) $("#variableScope", template).remove();
+	var valHolder = $("#values", template);
+	individual["v-wf:variableValue"].map( function (value) {
+		var el = $("<li>");
+		if (value instanceof veda.IndividualModel) {
+			new veda.IndividualModel(value, el, new veda.IndividualModel("v-ui:ClassNameLabelTemplate"));
+		} else {
+			el.text(value.toString());
+		}
+		valHolder.append(el);
+	});
+</script>
+  """ ;
+  .
+
+v-wf:WorkOrderTemplate
+  rdf:type v-ui:ClassTemplate ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Шаблон для класса Рабочее задание"@ru ;
+  rdfs:label "Template for Work Order"@en ;
+  v-ui:forClass v-wf:WorkOrder ;
+  v-ui:template """
+<div>
+	<strong><span about="@" property="@"></span> <a href="#/@"><i class='glyphicon glyphicon-share-alt'></i></a></strong>
+	<div id="executor">
+		<em about="v-wf:executor" property="rdfs:label"></em>
+		<ul><li rel="v-wf:executor" template="v-ui:ClassNameLabelTemplate"></li></ul>
+	</div>
+	<div id="decisionFormList">
+		<em about="v-wf:decisionFormList" property="rdfs:label"></em>
+		<ul><li rel="v-wf:decisionFormList" template="v-ui:ClassNameLabelTemplate"></li></ul>
+	</div>
+	<div id="outVars">
+		<em about="v-wf:outVars" property="rdfs:label"></em>
+		<ul><li rel="v-wf:outVars" template="v-wf:VariableTemplate"></li></ul>
+	</div>
+	<div id="isProcess">
+		<em about="v-wf:isProcess" property="rdfs:label"></em>
+		<ul><li rel="v-wf:isProcess" template="v-ui:ClassNameLabelTemplate"></li></ul>
+	</div>
+	<div id="traceJournal">
+		<em><h5 about="v-wf:traceJournal" property="rdfs:label"></h5></em>
+		<span rel="v-wf:traceJournal" template="v-ui:LabelLinkTemplate"></span>
+		<hr>
+	</div>	
+	<br/>	
+</div>
+<script>
+	if (!individual.hasValue("v-wf:decisionFormList")) $("#decisionFormList", template).remove();
+	if (!individual.hasValue("v-wf:executor")) $("#executor", template).remove();
+	if (!individual.hasValue("v-wf:outVars")) $("#outVars", template).remove();
+	if (!individual.hasValue("v-wf:isProcess")) $("#isProcess", template).remove();
+	if (!individual.hasValue("v-wf:traceJournal")) $("#traceJournal", template).remove();
+</script>
+  """ ;
+  .
+  
+v-wf:DecisionFormTemplate
+  rdf:type v-ui:ClassTemplate ;
+	rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Шаблон для класса Форма решения"@ru ;
+  rdfs:label "Template for Decision form class"@en ;
+  rdfs:comment "Пустой шаблон сделан специально, поскольку индивиды этого класса не должны вводиться пользователями"@ru ;
+  v-ui:forClass v-wf:DecisionForm ;
+  v-ui:template """
+<script>
+	if (individual["v-wf:to"][0].id === veda.appointment.id && !individual.hasValue("v-wf:read")) {
+		individual["v-wf:read"] = [true];
+		individual.save();
+	}
+</script>
+  """ ;
+  .
+
+#---------------------------- Decision Form ------------------------
+
+v-wf:DecisionForm
+	rdf:type rdfs:Class ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "Форма решения"@ru ;
+	rdfs:label "Decision form"@en ;
+.
+
+v-wf:onWorkOrder
+	rdf:type owl:ObjectProperty ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "on work order"@en ;
+	rdfs:label "по рабочему заданию"@ru ;
+	rdfs:domain v-wf:DecisionForm ;
+	rdfs:range v-s:WorkOrder ;
+.
+
+v-wf:takenDecision
+	rdf:type owl:ObjectProperty ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "решение"@ru ;
+	rdfs:label "decision"@en ;
+	rdfs:domain v-wf:DecisionForm ;
+	rdfs:range rdfs:Resource ;
+.
+v-wf:possibleDecisionClass
+	rdf:type owl:ObjectProperty ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "варианты решения"@ru ;
+	rdfs:label "possible decision"@ru ;
+	rdfs:domain v-wf:DecisionForm ;
+	rdfs:range owl:Class ;
+.
+
+v-wf:onDocument
+	rdf:type owl:ObjectProperty ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "по документу"@ru ;
+	rdfs:label "for document"@en ;
+	rdfs:domain v-wf:DecisionForm ;
+	rdfs:range rdfs:Resource ;
+.
+
+v-wf:from
+	rdf:type owl:ObjectProperty ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "от кого"@ru ;
+	rdfs:label "from"@en ;
+	rdfs:domain v-wf:DecisionForm ;
+	rdfs:domain v-s:Deliverable ;
+	rdfs:range v-s:Appointment ;
+.
+
+v-wf:to
+	rdf:type owl:ObjectProperty ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "кому"@ru ;
+	rdfs:label "to"@en ;
+	rdfs:domain v-wf:DecisionForm ;
+	rdfs:domain v-wf:DecisionRedirect ;
+	rdfs:domain v-s:JournalRecord ;
+	rdfs:domain v-s:Deliverable ;
+	rdfs:range v-s:Appointment ;
+.
+
+v-wf:replyTo
+	rdf:type owl:ObjectProperty ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "reply to" ;
+	rdfs:domain v-s:Deliverable ;
+	rdfs:range v-s:Appointment ;
+.
+
+v-wf:dateGiven
+	rdf:type owl:DatatypeProperty ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "контрольный срок"@ru ;
+	rdfs:label "due date"@en ;
+	rdfs:domain v-wf:DecisionForm ;
+	rdfs:range xsd:dateTime ;
+.
+
+v-wf:read
+	rdf:type owl:DatatypeProperty ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "прочитано"@ru ;
+	rdfs:label "read"@en ;
+	rdfs:domain v-wf:DecisionForm ;
+	rdfs:range xsd:boolean ;
+.
+
+# --------------------------- Start Form ---------------------------
+v-wf:StartForm
+	rdf:type rdfs:Class ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "Стартовая форма"@ru ;
+	rdfs:label "Start form"@en ;
+.
+
+v-s:StatusWorkflow
+	rdfs:domain v-wf:StartForm ;
+.
+
+v-wf:processedDocument
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "обрабатываемый документ"@ru ;
+	rdfs:label "processed document"@en ;
+	rdfs:domain v-wf:StartForm ;
+	rdfs:range v-s:Document ;
+.
+#-- используется только в тестовом комплексном маршруте --
+v-wf:processInitiator
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "инициатор процесса"@ru ;
+	rdfs:label "process initiator"@en ;
+	rdfs:domain v-wf:StartForm ;
+	rdfs:range v-s:Appointment ;
+.
+
+v-wf:forNet
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "для сети..."@ru ;
+	rdfs:label "for net..."@en ;
+	rdfs:domain v-wf:StartForm ;
+	rdfs:range v-wf:Net ;
+.
+
+v-wf:useTransformation
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "использовать преобразование"@ru ;
+	rdfs:label "use transformation"@en ;
+	rdfs:domain v-wf:StartForm ;
+	rdfs:range v-wf:Transform ;
+.
+
+# --------------------------- Mapping to variable ---------------------------
+
+v-wf:Mapping
+	rdf:type owl:Class ;
+	rdfs:subClassOf owl:Thing ;	
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "Mapping"@en ;
+	rdfs:label "Преобразование"@ru ;
+.
+v-wf:mappingExpression
+        rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+        rdfs:label "mapping expression"@en ;
+        rdfs:label "выражение преобразования"@ru ;
+        rdfs:domain v-wf:Mapping ;
+        rdfs:range xsd:string ;
+.
+v-wf:mapToVariable
+        rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+        rdfs:label "maps to variable"@en ;
+        rdfs:label "преобразуется в переменную"@ru ;
+        rdfs:domain v-wf:Mapping ;
+        rdfs:range v-wf:VarDefine ;
+.
+
+# --------------------------- Transformation ---------------------------
+
+v-wf:Transform
+	rdf:type rdfs:Class ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "Трансформация"@ru ;
+	rdfs:label "Transformation"@en ;
+.
+
+v-wf:transformRule
+        rdf:type owl:ObjectProperty ;
+	rdfs:isDefinedBy v-wf: ;
+        rdfs:label "правило преобразования"@ru ;
+	rdfs:domain v-wf:Transform ;
+        rdfs:range v-wf:Rule ;
+.
+
+v-wf:Rule
+	rdf:type rdfs:Class ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "правило"@ru ;
+.
+
+v-wf:segregateObject
+        rdf:type owl:DatatypeProperty ;
+	rdfs:isDefinedBy v-wf: ;
+        rdfs:label "выражение для выделения подмножества обьектов"@ru ;
+	rdfs:domain v-wf:Rule ;
+        rdfs:range xsd:string ;
+.
+v-wf:segregateElement
+        rdf:type owl:DatatypeProperty ;
+	rdfs:isDefinedBy v-wf: ;
+        rdfs:label "выражение для выделения подмножества элементов"@ru ;
+	rdfs:domain v-wf:Rule ;
+        rdfs:range xsd:string ;
+.
+v-wf:conversion
+        rdf:type owl:DatatypeProperty ;
+	rdfs:isDefinedBy v-wf: ;
+        rdfs:label "выражение для преобразования элемента"@ru ;
+	rdfs:domain v-wf:Rule ;
+        rdfs:range xsd:string ;
+.
+
+v-wf:create
+        rdf:type owl:DatatypeProperty ;
+	rdfs:isDefinedBy v-wf: ;
+        rdfs:label "выражение для создания обьекта"@ru ;
+	rdfs:domain v-wf:Rule ;
+        rdfs:range xsd:string ;
+.
+
+v-wf:aggregate
+        rdf:type owl:DatatypeProperty ;
+	rdfs:isDefinedBy v-wf: ;
+        rdfs:label "выражение для размещения элемента в обьекте"@ru ;
+	rdfs:domain v-wf:Rule ;
+        rdfs:range xsd:string ;
+.
+
+v-wf:grouping
+        rdf:type owl:DatatypeProperty ;
+	rdfs:isDefinedBy v-wf: ;
+        rdfs:label "выражение для группировки созданных обьектов"@ru ;
+	rdfs:domain v-wf:Rule ;
+        rdfs:range xsd:string ;
+.
+
+# --------------------------- Process ---------------------------
+v-wf:Process
+	rdf:type rdfs:Class ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "Процесс"@ru ;
+	rdfs:label "Process"@en ;
+.
+v-wf:instanceOf
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "процесс сети..."@ru ;
+	rdfs:label "instance of..."@en ;
+	rdfs:domain v-wf:Process ;
+	rdfs:range v-wf:Net ;
+.
+v-wf:inVars
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "входящие переменные"@ru ;
+	rdfs:domain v-wf:Process ;
+	rdfs:domain v-wf:WorkItem ;
+	rdfs:range v-wf:Variable ;
+.
+
+v-wf:localVars
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "локальные переменные"@ru ;
+	rdfs:domain v-wf:Process ;
+	rdfs:domain v-wf:WorkItem ;
+	rdfs:range v-wf:Variable ;
+.
+
+v-wf:outVars
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "исходящие переменные"@ru ;
+	rdfs:domain v-wf:Process ;
+	rdfs:domain v-wf:WorkItem ;
+	rdfs:domain v-wf:WorkOrder ;
+	rdfs:range v-wf:Variable ;
+.
+
+v-wf:parentWorkOrder
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "относится к рабочему заданию"@ru ;
+	rdfs:domain v-wf:Process ;
+	rdfs:range v-wf:WorkOrder ;
+.
+
+# --------------------------- WorkItem ---------------------------
+v-wf:WorkItem
+	rdf:type rdfs:Class ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "выполняемая задача"@ru ;
+	rdfs:label "work item"@en ;
+.
+
+v-wf:forProcess
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "относится к процессу"@ru ;
+	rdfs:label "for process"@en ;
+	rdfs:domain v-wf:WorkItem ;
+	rdfs:range v-wf:Process ;
+.
+
+v-wf:forNetElement
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "относится к элементу сети"@ru ;
+	rdfs:label "for net element"@en ;
+	rdfs:domain v-wf:WorkItem ;
+	rdfs:range v-wf:NetElement ;
+.
+
+v-wf:workOrderList
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "список заданий для исполнителей"@ru ;
+	rdfs:label "list task for executor"@en ;
+	rdfs:domain v-wf:WorkItem ;
+	rdfs:range v-wf:WorkOrder ;
+.
+
+v-wf:workItemList
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "список порожденных заданий"@ru ;
+	rdfs:domain v-wf:Process ;
+	rdfs:domain v-wf:WorkItem ;
+	rdfs:domain v-wf:Process ;
+	rdfs:range v-wf:WorkItem ;
+.
+
+v-wf:previousWorkItem
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "предыдущая выполняемая задача"@ru ;
+	rdfs:domain v-wf:WorkItem ;
+	rdfs:range v-wf:WorkItem ;
+.
+
+v-wf:isCompleted
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "is completed"@en ;
+	rdfs:label "завершено"@ru ;
+	rdfs:domain v-wf:WorkItem ;
+	rdfs:domain v-wf:Process ;
+	rdfs:domain v-wf:DecisionForm ;
+	rdfs:range xsd:boolean ;
+.
+
+v-wf:isStopped
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "is stopped"@en ;
+	rdfs:label "остановлено"@ru ;
+	rdfs:domain v-wf:Process ;
+	rdfs:domain v-wf:DecisionForm ;
+	rdfs:range xsd:boolean ;
+.
+
+# --------------------------- WorkOrder --------------------------
+v-wf:WorkOrder
+	rdf:type owl:Class ;
+	rdfs:subClassOf owl:Thing ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "work order"@en ;
+	rdfs:label "рабочее задание"@ru ;
+.
+
+v-wf:forWorkItem
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "относится к выполняемой задаче"@ru ;
+	rdfs:label "for work item"@en ;
+	rdfs:domain v-wf:WorkOrder ;
+	rdfs:range v-wf:WorkItem ;
+.
+
+v-wf:useSubNet
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "использовать подсеть"@ru ;
+	rdfs:domain v-wf:WorkOrder ;
+	rdfs:range v-wf:Net ;
+.
+
+v-wf:decisionFormList
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "список порожденных пользовательских форм"@ru ;
+	rdfs:domain v-wf:WorkOrder ;
+.
+# --------------------------- обработка событий => docflow ---------------------------------------
+v-wf:event_df1
+	rdf:type v-s:Event ;
+	rdfs:isDefinedBy v-wf: ;
+	v-s:author cfg:VedaSystemAccount ;
+	v-s:filter v-wf:StartForm ;
+	v-s:script """
+
+	if (!parent_script_id)
+		prepare_start_form (ticket, document);
+
+""" ;
+	rdfs:label "триггер запуска маршрута из пользовательской формы"@ru ;
+.
+
+v-wf:event_df2
+	rdf:type v-s:Event ;
+	rdfs:isDefinedBy v-wf: ;
+	v-s:author cfg:VedaSystemAccount ;
+	v-s:filter v-wf:Process ;
+	v-s:script """
+
+//	print("Event df2: parent_document_id=", parent_document_id, ", parent_script_id=", parent_script_id, ", _event_id=", _event_id );
+
+	if ((!document['v-wf:isStopped'] || 
+	    document['v-wf:isStopped'][0].data == false) && parent_script_id && 
+		(parent_script_id == 'v-wf:event_df1' || parent_script_id == 'v-wf:event_df2' || parent_script_id == 'v-wf:event_df3' || 
+		 parent_script_id == 'v-wf:event_df4' || parent_script_id == 'v-wf:event_df5'))
+	{
+		prepare_process (ticket, document);
+	}
+
+""" ;
+	rdfs:label "триггер выполнения маршрута"@ru ;
+.
+
+v-wf:event_df3
+	rdf:type v-s:Event ;
+	rdfs:isDefinedBy v-wf: ;
+	v-s:author cfg:VedaSystemAccount ;
+	v-s:filter v-wf:WorkItem ;
+	v-s:script """
+
+	//print("Event df3: parent_document_id=", parent_document_id, ", parent_script_id=", parent_script_id, ", _event_id=", _event_id );
+
+	if (parent_script_id && 
+		(parent_script_id == 'v-wf:event_df1' || parent_script_id == 'v-wf:event_df2' || parent_script_id == 'v-wf:event_df3' || 
+		 parent_script_id == 'v-wf:event_df4' || parent_script_id == 'v-wf:event_df5'))
+	{
+		prepare_work_item (ticket, document);
+	}
+	
+""" ;
+	rdfs:label "триггер выполнения элемента сети"@ru ;
+.
+
+v-wf:event_df4
+	rdf:type v-s:Event ;
+	rdfs:isDefinedBy v-wf: ;
+	v-s:author cfg:VedaSystemAccount ;
+	v-s:filter v-wf:WorkOrder ;
+	v-s:script """
+
+	//print("Event df4: parent_document_id=", parent_document_id, ", parent_script_id=", parent_script_id, ", _event_id=", _event_id );
+	if (parent_script_id && 
+		(parent_script_id == 'v-wf:event_df1' || parent_script_id == 'v-wf:event_df2' || parent_script_id == 'v-wf:event_df3' || 
+		 parent_script_id == 'v-wf:event_df4' || parent_script_id == 'v-wf:event_df5'))
+	{
+		prepare_work_order (ticket, document);
+	}
+""" ;
+	rdfs:label "триггер выполнения рабочего задания"@ru ;
+.
+
+v-wf:event_df5
+	rdf:type v-s:Event ;
+	rdfs:isDefinedBy v-wf: ;
+	v-s:author cfg:VedaSystemAccount ;
+	v-s:filter v-wf:DecisionForm ;
+	v-s:script """
+
+	if (!parent_script_id || 
+		(parent_script_id == 'v-wf:event_df1' || parent_script_id == 'v-wf:event_df2' || parent_script_id == 'v-wf:event_df3' || 
+		 parent_script_id == 'v-wf:event_df4' || parent_script_id == 'v-wf:event_df5'))
+	{	 
+		prepare_decision_form (ticket, document);
+	}
+
+""" ;
+	rdfs:label "триггер обработки решения пользователя"@ru ;
+.
+
+v-wf:Decision
+	rdf:type owl:Class ;
+	rdfs:subClassOf owl:Thing ;
+	rdfs:subClassOf v-s:Embedded ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "decision"@en ;
+	rdfs:label "решение"@ru ;
+.
+
+v-wf:permission_c_on_decision
+  rdf:type v-s:PermissionStatement ;
+  v-s:canCreate "true"^^xsd:boolean ;
+  v-s:permissionObject v-wf:Decision ;
+	v-s:permissionObject v-wf:DecisionGoSign ;
+	v-s:permissionObject v-wf:DecisionGoReview ;
+	v-s:permissionObject v-wf:DecisionAnswerToYourQuestion ;
+	v-s:permissionObject v-wf:DecisionControll ;
+	v-s:permissionObject v-wf:DecisionNotRequireReview ;
+	v-s:permissionObject v-wf:DecisionAgreed ;
+	v-s:permissionObject v-wf:DecisionAgreedToProject ;
+	v-s:permissionObject v-wf:DecisionAgreedToExecute ;
+	v-s:permissionObject v-wf:DecisionAgreedToExecuteComment ;
+	v-s:permissionObject v-wf:DecisionSign ;
+	v-s:permissionObject v-wf:DecisionApprove ;
+	v-s:permissionObject v-wf:DecisionReview ;
+	v-s:permissionObject v-wf:DecisionRejected ;
+	v-s:permissionObject v-wf:DecisionRemake ;
+	v-s:permissionObject v-wf:DecisionRemaked ;
+	v-s:permissionObject v-wf:DecisionNotForMe ;
+	v-s:permissionObject v-wf:DecisionBreak ;
+	v-s:permissionObject v-wf:DecisionExamined ;
+	v-s:permissionObject v-wf:DecisionAchieved ;
+	v-s:permissionObject v-wf:DecisionNotPerformed ;
+	v-s:permissionObject v-wf:DecisionConfirm ;
+	v-s:permissionObject v-wf:DecisionRedirect ;
+	v-s:permissionObject v-wf:DecisionCalculationsPerformed ;  
+  v-s:permissionSubject cfg:AllUsersGroup ;
+.
+
+v-wf:DecisionAnswerToYourQuestion
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Decision ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "Ответ на ваш вопрос"@ru ;
+.	
+
+v-wf:DecisionControll
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Decision ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "Принять отчет по поручению"@ru ;
+.	
+
+v-wf:DecisionNotRequireReview
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Decision ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "Не требует рассмотрения"@ru ;
+.	
+
+v-wf:DecisionAgreed
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Decision ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "согласовано"@ru ;
+.	
+
+v-wf:DecisionAgreedToProject
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Decision ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "начать проект"@ru ;
+.	
+
+v-wf:DecisionAgreedToExecute
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Decision ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "согласовано в реализацию"@ru ;
+.	
+
+v-wf:DecisionAgreedToExecuteComment
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Decision ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "согласовано в реализацию"@ru ;
+.	
+
+v-wf:DecisionSign
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Decision ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "подписано"@ru ;
+.	
+
+v-wf:DecisionApprove
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Decision ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "утверждено"@ru ;
+.	
+
+v-wf:DecisionReview
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Decision ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "рассмотрено"@ru ;
+.	
+
+v-wf:DecisionRejected
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Decision ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "отклонено"@ru ;
+.	
+
+v-wf:DecisionRemake
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Decision ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "доработать"@ru ;
+.	
+
+v-wf:DecisionRemaked
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Decision ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "доработанно"@ru ;
+.	
+
+v-wf:DecisionNotForMe
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Decision ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "исполнитель не я"@ru ;
+.	
+
+v-wf:DecisionBreak
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Decision ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "прервать маршрут"@ru ;
+.	
+
+v-wf:DecisionExamined
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Decision ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "ознакомлен"@ru ;
+.	
+
+v-wf:DecisionAchieved
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Decision ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "выполнено"@ru ;
+.	
+
+v-wf:DecisionNotPerformed
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Decision ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "не выполнено"@ru ;
+.	
+
+v-wf:DecisionConfirm
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Decision ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "подтверждено"@ru ;
+.	
+
+v-wf:DecisionRedirect
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Decision ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "перенаправить другому"@ru ;
+.	
+
+v-wf:DecisionCalculationsPerformed
+	rdf:type owl:Class ;
+	rdfs:subClassOf v-wf:Decision ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "расчет выполнен"@ru ;
+.
+
+v-wf:DecisionRedirectTemplate
+  rdf:type v-ui:ClassTemplate ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Шаблон для класса -Перенаправить другому-"@ru ;
+  rdfs:label "Template for -Decision Redirect- class"@en ;
+  v-ui:forClass v-wf:DecisionRedirect ;
+  v-ui:template """
+<div>
+	<em about="v-wf:to" property="rdfs:label"></em>
+	<div rel="v-wf:to" template="v-ui:LabelTemplate" class="view -edit -search"></div>
+	<veda-control rel="v-wf:to" type="link" class="-view edit search fulltext dropdown"></veda-control>
+	<br>
+	<em about="rdfs:comment" property="rdfs:label"></em>
+	<div property="rdfs:comment" class="view -edit -search"></div>
+	<veda-control property="rdfs:comment" type="text" class="-view edit search"></veda-control>
+</div>
+  """ ;
+.
+v-wf:DecisionTemplate1
+  rdf:type v-ui:ClassTemplate ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Шаблон для класса -Решение-"@ru ;
+  rdfs:label "Template for -Decision- class"@en ;
+  v-ui:forClass v-wf:DecisionAgreed ;
+  v-ui:forClass v-wf:DecisionSign ;
+  v-ui:forClass v-wf:DecisionApprove ;
+  v-ui:forClass v-wf:DecisionReview ;
+  v-ui:forClass v-wf:DecisionBreak ;
+  v-ui:forClass v-wf:DecisionExamined ;
+  v-ui:forClass v-wf:DecisionAchieved ;
+  v-ui:forClass v-wf:DecisionRejected ;
+  v-ui:forClass v-wf:DecisionRemake ;
+  v-ui:forClass v-wf:DecisionRemaked ;
+  v-ui:forClass v-wf:DecisionNotPerformed ;
+  v-ui:forClass v-wf:DecisionConfirm ;
+  v-ui:forClass v-wf:DecisionAgreedToProject ;  
+  v-ui:forClass v-wf:DecisionAgreedToExecuteComment ;   
+  v-ui:forClass v-wf:DecisionCalculationsPerformed ;
+  v-ui:template """
+<div>
+	<em about="rdfs:comment" property="rdfs:label"></em>
+	<div property="rdfs:comment" class="view -edit -search"></div>
+	<veda-control property="rdfs:comment" type="text" class="-view edit search"></veda-control>
+</div>
+  """ ;
+.
+
+v-wf:DecisionRedirectTemplateSpec1
+  rdf:type v-ui:PropertySpecification ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Спецификация к свойству комментарий для некоторых подклассов класса -Решение-"@ru ;
+  rdfs:label "Spec for template for some -Decision- subclasses"@en ;
+  v-ui:minCardinality "1"^^xsd:integer ;
+  v-ui:maxCardinality "1"^^xsd:integer ;
+  v-ui:forProperty rdfs:comment ;
+  v-ui:forClass v-wf:DecisionRejected ;
+  v-ui:forClass v-wf:DecisionRemake ;
+  v-ui:forClass v-wf:DecisionNotPerformed ;
+.
+
+v-wf:DecisionRedirectTemplateSpec2
+  rdf:type v-ui:PropertySpecification ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Спецификация к свойству комментарий для некоторых подклассов класса -Решение-"@ru ;
+  rdfs:label "Spec for template for some -Decision- subclasses"@en ;
+  v-ui:maxCardinality "1"^^xsd:integer ;
+  v-ui:forProperty rdfs:comment ;
+  v-ui:forClass v-wf:DecisionAgreed ;
+  v-ui:forClass v-wf:DecisionSign ;
+  v-ui:forClass v-wf:DecisionApprove ;
+  v-ui:forClass v-wf:DecisionReview ;
+  v-ui:forClass v-wf:DecisionBreak ;
+  v-ui:forClass v-wf:DecisionRemaked ;
+  v-ui:forClass v-wf:DecisionExamined ;
+  v-ui:forClass v-wf:DecisionAchieved ;
+  v-ui:forClass v-wf:DecisionAgreedToProject ;
+  v-ui:forClass v-wf:DecisionConfirm ;   
+  v-ui:forClass v-wf:DecisionAgreedToExecuteComment ;   
+  v-ui:forClass v-wf:DecisionCalculationsPerformed ;
+.
+
+v-wf:DecisionRedirectTemplateSpec3
+  rdf:type v-ui:PropertySpecification ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Спецификация свойств для класса -Перенаправить другому-"@ru ;
+  rdfs:label "Spec for template for -Decision Redirect- class"@en ;
+  v-ui:forClass v-wf:DecisionRedirect ;
+  v-ui:forClass v-wf:DecisionAgreedToExecute ;   
+  v-ui:forProperty v-wf:to, rdfs:comment ;
+  v-ui:minCardinality "1"^^xsd:integer ;
+  v-ui:maxCardinality "1"^^xsd:integer ;
+  v-ui:queryPrefix "('rdf:type'=='v-s:Appointment')"
+.
+
+v-wf:startingJournalMap
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "начальное преобразование для журнала"@ru ;
+	rdfs:domain v-wf:Task ;
+	rdfs:range v-wf:Mapping ;
+.
+
+v-wf:completedJournalMap
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "конечное преобразование для журнала"@ru ;
+	rdfs:domain v-wf:Task ;
+	rdfs:range v-wf:Mapping ;
+.
+
+v-wf:startingMessageMap
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "начальное преобразование для отправки сообщений"@ru ;
+	rdfs:domain v-wf:Task ;
+	rdfs:range v-wf:Mapping ;
+.
+
+v-wf:completedMessageMap
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "конечное преобразование для отправки сообщений"@ru ;
+	rdfs:domain v-wf:Task ;
+	rdfs:range v-wf:Mapping ;
+.
+
+v-wf:startingExecutorJournalMap
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "начальное преобразование данных исполнителя для журнала"@ru ;
+	rdfs:domain v-wf:Task ;
+	rdfs:range v-wf:Mapping ;
+.
+
+v-wf:completedExecutorJournalMap
+	rdf:type rdf:Property ;
+	rdfs:isDefinedBy v-wf: ;
+	rdfs:label "конечное преобразование данных исполнителя для журнала"@ru ;
+	rdfs:domain v-wf:Task ;
+	rdfs:range v-wf:Mapping ;
+.
+v-wf:onProcess
+  rdf:type owl:ObjectProperty ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:domain v-s:JournalRecord, v-s:Journal, v-s:ProcessStarted ;
+  rdfs:label "on process"@en ;
+  rdfs:label "к процессу"@ru ;
+  rdfs:range v-wf:Process ;
+.
+
+v-wf:initiator
+  rdf:type owl:ObjectProperty ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:domain v-wf:ProcessStarted, v-wf:SubProcessStarted ;
+  rdfs:label "инициатор"@ru ;
+  rdfs:label "initiator"@en ;
+  rdfs:range v-s:Appointment ;
+.
+
+v-wf:executor
+  rdfs:domain v-wf:TaskGiven, v-wf:TaskCompleted ;
+.
+
+v-wf:isProcess
+  rdf:type owl:ObjectProperty ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Запущен процесс"@ru ;
+  rdfs:label "Started process"@en ;
+  rdfs:domain v-wf:StartForm ;
+  rdfs:domain v-wf:WorkOrder ;
+  rdfs:range v-wf:Process ;
+.
+v-wf:ProcessStarted
+  rdf:type owl:Class ;
+  rdfs:subClassOf v-s:JournalRecord ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Запущен процесс"@ru ;
+  rdfs:label "Process was started"@en ;
+.
+v-wf:ProcessStopped
+  rdf:type owl:Class ;
+  rdfs:subClassOf v-s:JournalRecord ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Процесс прерван"@ru ;
+  rdfs:label "Process was stopped"@en ;
+.
+
+v-s:actor
+  rdf:type owl:ObjectProperty ;
+  rdfs:domain v-wf:ProcessStopped ;
+.
+
+v-wf:SubProcessStarted
+  rdf:type owl:Class ;
+  rdfs:subClassOf v-s:JournalRecord ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Запущен подпроцесс"@ru ;
+  rdfs:label "Subprocess started"@en ;
+.
+
+v-wf:WorkItemStarted
+  rdf:type owl:Class ;
+  rdfs:subClassOf v-s:JournalRecord ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Запущен блок"@ru ;
+  rdfs:label "Item was started"@en ;
+.
+
+v-wf:DecisionFormStarted
+  rdf:type owl:Class ;
+  rdfs:subClassOf v-s:JournalRecord ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Decision Form Started"@en ;
+.
+
+v-wf:WorkOrderStarted
+  rdf:type owl:Class ;
+  rdfs:subClassOf v-s:JournalRecord ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Запущено действие"@ru ;
+  rdfs:label "Order was started"@en ;
+.
+
+v-wf:ProcessCompleted
+  rdf:type owl:Class ;
+  rdfs:subClassOf v-s:JournalRecord ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Завершен процесс"@ru ;
+  rdfs:label "Process completed"@en ;
+.
+v-wf:TaskGiven
+  rdf:type owl:Class ;
+  rdfs:subClassOf v-s:JournalRecord ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Выдана задача"@ru ;
+  rdfs:label "Task given"@en ;
+.
+v-wf:TaskCompleted
+  rdf:type owl:Class ;
+  rdfs:subClassOf v-s:JournalRecord ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Действие выполнено"@ru ;
+  rdfs:label "Task completed"@en ;
+.
+v-wf:TraceRecord
+  rdf:type owl:Class ;
+  rdfs:subClassOf v-s:JournalRecord ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:label "Trace Record"@en ;
+.
+v-wf:takenDecision
+  rdf:type owl:ObjectProperty ;
+  rdfs:domain v-s:JournalRecord ;
+.
+
+v-wf:WorkflowReadUser
+  rdf:type v-s:Group ;
+  rdfs:label "Workflow Read User"@en ;
+  rdfs:label "Пользователи имеющие право на чтение обьектов workflow"@ru ;
+.
+
+v-wf:traceJournal
+  rdf:type owl:ObjectProperty ;
+  rdfs:isDefinedBy v-wf: ;
+  rdfs:domain v-wf:DecisionForm ;
+  rdfs:domain v-wf:WorkItem ;
+  rdfs:domain v-wf:WorkOrder ;
+  rdfs:domain v-wf:Process ;
+  rdfs:label "системный журнал"@ru ;
+  rdfs:range v-s:Journal ;
+.
+
+
+#################################################################################### JOURNAL UI
+v-ui:TaskGivenTemplate
+  rdf:type v-ui:ClassTemplate ;
+  rdfs:label "Шаблон события по задаче"@ru ;
+  rdfs:label "Task event template"@en ;
+  v-ui:forClass v-wf:TaskGiven ;
+  v-ui:template """
+<div class="journal-record">
+  <hr class="margin-sm">
+  <div class="row">
+	<div class="col-md-3 col-sm-3 event-type">
+	  <span rel="rdf:type" template="v-ui:LabelTemplate"></span>
+	</div>
+	<div class="col-md-7 col-sm-6 event-desc">
+	  <div property="rdfs:label"></div>
+      <span id="executor">
+        <span about="v-wf:executor" property="rdfs:label"></span>: 
+	    <em rel="v-wf:executor" template="v-ui:LabelTemplate"></em>
+	  </span>
+	</div>
+	<div class="col-md-2 col-sm-3 event-date text-right">
+	  <span property="v-s:created"></span>
+	</div>
+  </div>
+</div>
+<script>
+  if (!individual.hasValue("v-wf:executor")) $("#executor", template).remove();
+</script>
+  """ ;
+.
+v-ui:TaskCompletedTemplate
+  rdf:type v-ui:ClassTemplate ;
+  rdfs:label "Шаблон события по задаче"@ru ;
+  rdfs:label "Task event template"@en ;
+  v-ui:forClass v-wf:TaskCompleted ;
+  v-ui:template """
+<div class="journal-record">
+  <hr class="margin-sm">
+  <div class="row">
+	<div class="col-md-3 col-sm-3 event-type">
+	  <span rel="rdf:type" template="v-ui:LabelTemplate"></span>
+	</div>
+	<div class="col-md-7 col-sm-6 event-desc">
+	  <div property="rdfs:label"></div>
+      <span id="executor">
+        <span about="v-wf:executor" property="rdfs:label"></span>: 
+	    <em rel="v-wf:executor" template="v-ui:LabelTemplate"></em>
+	  </span>
+      <div id="decision">
+        <span about="v-wf:takenDecision" property="rdfs:label"></span>: 
+	    <em rel="v-wf:takenDecision">
+	      <span>
+			<strong property="rdfs:label"></strong> 
+			<span rel="v-wf:to"><span>(<span property="rdfs:label"></span>)</span></span>
+			, <span property="rdfs:comment"></span>
+		  </span>
+	    </em>
+	  </div>
+	</div>
+	<div class="col-md-2 col-sm-3 event-date text-right">
+	  <span property="v-s:created"></span>
+	</div>
+  </div>
+</div>
+<script>
+  if (!individual.hasValue("v-wf:executor")) $("#executor", template).remove();
+  if (!individual.hasValue("v-wf:takenDecision")) $("#decision", template).remove();
+</script>
+  """ ;
+.
+v-ui:ProcessEventTemplate
+  rdf:type v-ui:ClassTemplate ;
+  rdfs:label "Шаблон события процесса"@ru ;
+  rdfs:label "Process event template"@en ;
+  v-ui:forClass v-wf:ProcessStarted, v-wf:ProcessCompleted ;
+  v-ui:template """
+<div class="journal-record">
+  <hr class="margin-sm">
+  <div class="row">
+	<div class="col-md-3 col-sm-3 event-type">
+	  <strong rel="rdf:type" template="v-ui:LabelTemplate"></strong>
+	</div>
+	<div class="col-md-7 col-sm-6 event-desc">
+	  <div property="rdfs:label"></div>
+      <span id="initiator">
+        <span about="v-wf:initiator" property="rdfs:label"></span>: 
+	    <em rel="v-wf:initiator" template="v-ui:LabelTemplate"></em>
+	  </span>
+	</div>
+	<div class="col-md-2 col-sm-3 event-date text-right">
+	  <span property="v-s:created"></span>
+	</div>
+  </div>
+</div>
+<script>
+  if (!individual.hasValue("v-wf:initiator")) $("#initiator", template).remove();
+</script>
+  """ ;
+.
+
+v-ui:SubProcessStartedEventTemplate
+  rdf:type v-ui:ClassTemplate ;
+  rdfs:label "Шаблон события запуска подпроцесса"@ru ;
+  rdfs:label "Subprocess start event template"@en ;
+  v-ui:forClass v-wf:SubProcessStarted ;
+  v-ui:template """
+ <div class="journal-record" rel="v-s:subJournal" template="v-ui:SubJournalTemplate"></div>
+  """ ;
+.
+
+v-ui:WorkItemStartedEventTemplate
+  rdf:type v-ui:ClassTemplate ;
+  rdfs:label "Шаблон обработки work item"@ru ;
+  v-ui:forClass v-wf:WorkItemStarted ;
+  v-ui:template """
+<div class="journal-record">
+  <hr class="margin-sm">
+  <div class="row">
+	<div class="col-md-3 col-sm-3 event-type">
+	  <a id="exp" href="#"><span class="glyphicon glyphicon-chevron-down"></span> <strong rel="rdf:type" template="v-ui:LabelTemplate"></strong></a>
+	</div>
+	<div class="col-md-7 col-sm-6 event-desc">
+	  <div property="rdfs:label"></div>
+	  <span id="initiator">
+        <span about="v-wf:initiator" property="rdfs:label"></span>: 
+	    <em rel="v-wf:initiator" template="v-ui:LabelTemplate"></em>
+	  </span>
+	</div>
+	<div class="col-md-2 col-sm-3 event-date text-right">
+	  <span property="v-s:created"></span>
+	</div>
+  </div>
+  <div rel="v-s:subJournal" template="v-ui:SubJournalTemplate"></div>
+</div>
+<script>
+  if (!individual.hasValue("v-wf:initiator")) $("#initiator", template).remove();
+  $("#exp", template).click(function (e) {
+    e.preventDefault();
+    $("div[rel='v-s:subJournal']", template).toggle();
+    $(this).children(":first").toggleClass("glyphicon-chevron-down glyphicon-chevron-right");
+  });
+</script>
+  """ ;
+.
+
+v-ui:WorkOrderStartedEventTemplate
+  rdf:type v-ui:ClassTemplate ;
+  rdfs:label "Шаблон обработки work item"@ru ;
+  v-ui:forClass v-wf:WorkOrderStarted ;
+  v-ui:template """
+  <div class="journal-record" rel="v-s:subJournal" template="v-ui:SubJournalTemplate"></div>
+  """ ;
+.
+
+v-ui:DecisionFormStartedEventTemplate
+  rdf:type v-ui:ClassTemplate ;
+  rdfs:label "Шаблон обработки work item"@ru ;
+  v-ui:forClass v-wf:DecisionFormStarted ;
+  v-ui:template """
+<div class="journal-record">
+  <hr class="margin-sm">
+  <div class="row">
+        <div class="col-md-3 col-sm-3 event-type">
+          <a id="exp" href="#"><span class="glyphicon glyphicon-chevron-down"></span> <strong rel="rdf:type" template="v-ui:LabelTemplate"></strong></a>
+        </div>
+        <div class="col-md-7 col-sm-6 event-desc">
+          <div property="rdfs:label"></div>
+          <span id="initiator">
+        <span about="v-wf:initiator" property="rdfs:label"></span>:
+            <em rel="v-wf:initiator" template="v-ui:LabelTemplate"></em>
+          </span>
+        </div>
+        <div class="col-md-2 col-sm-3 event-date text-right">
+          <span property="v-s:created"></span>
+        </div>
+  </div>
+  <div rel="v-s:subJournal" template="v-ui:SubJournalTemplate"></div>
+</div>
+<script>
+  if (!individual.hasValue("v-wf:initiator")) $("#initiator", template).remove();
+  $("#exp", template).click(function (e) {
+    e.preventDefault();
+    $("div[rel='v-s:subJournal']", template).toggle();
+    $(this).children(":first").toggleClass("glyphicon-chevron-down glyphicon-chevron-right");
+  });
+</script>
+  """ ;
+.
+
+
+v-ui:TraceEventTemplate
+  rdf:type v-ui:ClassTemplate ;
+  rdfs:label "Trace event template"@en ;
+  v-ui:forClass v-wf:TraceRecord;
+  v-ui:template """
+<div class="journal-record">
+  <style>
+    pre {font-size:10px;}
+  </style>
+  <hr class="margin-sm">
+  <div class="row">
+	<div class="col-md-3 col-sm-3 event-type">
+	  <span property="rdfs:label"></span>
+	</div>
+	<div class="col-md-7 col-sm-6 event-desc">
+	  <pre property="rdfs:comment"></pre>
+	</div>
+	<div class="col-md-2 col-sm-3 event-date text-right">
+	  <span property="v-s:created"></span>
+	</div>
+  </div>
+</div>
+<script>
+  var pre = $("pre", template),
+      txt = pre.text(),
+      re = new RegExp('"([\\w-]+:[\\w-]+)"','g'),
+      txt2 = txt.replace(re, "<a href='#/$1'>'$1'</a>");
+  pre.html(txt2);
+</script>
+  """ ;
+.
+
+v-wf:questionRouteStartFormLinkRule
+  rdf:type v-s:DocumentLinkRules;
+  rdfs:label "Задать вопрос"@ru ;
+  rdfs:label "Ask a question"@en ;
+  v-s:classTo v-df:QuestionRouteStartForm;
+  v-s:hasTransformation v-wf:questionRouteStartForm;
+  v-s:isRoute "true"^^xsd:boolean;
+.
+v-wf:instructionRouteStartFormLinkRule
+  rdf:type v-s:DocumentLinkRules;
+  rdfs:label "Исполнить поручение"@ru ;
+  rdfs:label "Execute instruction"@en ;
+  v-s:classTo v-df:InstructionRouteStartForm;
+  v-s:hasTransformation v-wf:instructionRouteStartForm;
+  v-s:isRoute "true"^^xsd:boolean;
+.
+
+v-wf:permission_on_simple_routes_start_from
+  rdf:type v-s:PermissionStatement ;
+  v-s:canCreate "true"^^xsd:boolean ;
+  v-s:permissionObject v-df:QuestionRouteStartForm ;
+  v-s:permissionObject v-df:InstructionRouteStartForm ;
+  v-s:permissionSubject cfg:AllUsersGroup ;
+.
+
+v-wf:questionRouteStartForm
+  rdf:type v-wf:Transform ;
+  v-wf:transformRule v-wf:rule1question ;
+  v-wf:transformRule v-wf:rule2question ;
+  v-wf:transformRule v-wf:rule3question ;  
+  rdfs:isDefinedBy v-wf: ;
+.
+v-wf:rule1question
+  rdf:type v-wf:Rule ;
+  v-wf:segregateElement "contentName('@')" ;
+  v-wf:aggregate "putValue ('v-wf:processedDocument')" ;
+  rdfs:isDefinedBy v-wf: ;
+  v-wf:grouping	"1";    
+.
+v-wf:rule2question
+  rdf:type v-wf:Rule ;
+  v-wf:aggregate "putUri ('v-wf:forNet', 's-wf:net_coordination')" ;
+  v-wf:segregateElement "contentName('@')" ;
+  rdfs:isDefinedBy v-wf: ;
+  v-wf:grouping	"1";    
+.
+v-wf:rule3question
+  rdf:type v-wf:Rule ;
+  v-wf:aggregate "putUri ('rdf:type', 'v-df:QuestionRouteStartForm')" ;
+  v-wf:aggregate "putUri ('v-wf:useTransformation', 'v-df:QuestionRouteStartFormToNet')" ;
+  v-wf:segregateElement "contentName('@')" ;
+  rdfs:isDefinedBy v-wf: ;
+  v-wf:grouping	"1";  
+.
+
+v-wf:instructionRouteStartForm
+  rdf:type v-wf:Transform ;
+  v-wf:transformRule v-wf:rule1instruction ;
+  v-wf:transformRule v-wf:rule2instruction ;
+  v-wf:transformRule v-wf:rule3instruction ;  
+  rdfs:isDefinedBy v-wf: ;
+.
+v-wf:rule1instruction
+  rdf:type v-wf:Rule ;
+  v-wf:segregateElement "contentName('@')" ;
+  v-wf:aggregate "putValue ('v-wf:processedDocument')" ;
+  rdfs:isDefinedBy v-wf: ;
+  v-wf:grouping	"1";    
+.
+v-wf:rule2instruction
+  rdf:type v-wf:Rule ;
+  v-wf:aggregate "putUri ('v-wf:forNet', 's-wf:net_coordination')" ;
+  v-wf:segregateElement "contentName('@')" ;
+  rdfs:isDefinedBy v-wf: ;
+  v-wf:grouping	"1";    
+.
+v-wf:rule3instruction
+  rdf:type v-wf:Rule ;
+  v-wf:aggregate "putUri ('rdf:type', 'v-df:InstructionRouteStartForm')" ;
+  v-wf:aggregate "putUri ('v-wf:useTransformation', 'v-df:InstructionRouteStartFormToNet')" ;
+  v-wf:segregateElement "contentName('@')" ;
+  rdfs:isDefinedBy v-wf: ;
+  v-wf:grouping	"1";  
+.
+v-wf:ProcessStopEvent
+  rdf:type v-s:Event ;
+  v-s:author cfg:VedaSystem ;
+  rdfs:label "Скрипт включает процесс в группу журнала документа." ;
+  rdfs:comment "Скрипт включает процесс в группу журнала документа." ;
+  v-s:filter v-wf:Process ;
+  v-s:script """
+/* Available variables:
+ * ticket = superuser ticket
+ * document = captured document
+ * user_uri = user whose actions triggered event
+ * prev_state = user whose actions triggered event
+ * _event_id = id of the event to prevent cycles in triggers. Must be passed to every function that modifies DB.
+ * parent_script_id = id of the parent script that triggered this event.
+ * parent_document_id = id of the document that triggered this event.
+ */	
+	function recursiveCall(elem) {
+		if (elem['v-wf:decisionFormList']) {
+			elem['v-wf:decisionFormList'].forEach(function(dfae) {
+			    var df = get_individual(ticket, dfae.data)
+				if (!df['v-wf:isCompleted'] || 
+				    df['v-wf:isCompleted'][0].data == false) 
+			    {				    
+					df['v-wf:isCompleted'] = newBool(true);
+					df['v-wf:isStopped'] = newBool(true);					
+					put_individual(ticket, df, _event_id);					
+					print("DF > "+toJson(df));
+				}
+			});
+		}
+		
+		if (elem['v-wf:workItemList']) {
+			elem['v-wf:workItemList'].forEach(function(wi) {
+				recursiveCall(get_individual(ticket, wi.data));
+    		});
+    	}
+		
+		if (elem['v-wf:workOrderList']) {
+			elem['v-wf:workOrderList'].forEach(function(wo) {
+				recursiveCall(get_individual(ticket, wo.data));
+			});
+		}
+		
+		if (elem['v-wf:isProcess']) {
+			elem['v-wf:isProcess'].forEach(function(p) {
+				recursiveCall(get_individual(ticket, p.data));
+			});
+		}
+	} 
+	
+print('1');	
+	if (document['v-wf:isStopped'] && 
+	    document['v-wf:isStopped'][0].data == true &&
+	    !prev_state['v-wf:isStopped']) {
+print('2');		    
+		// Disable all active tasks
+		recursiveCall(document);
+print('3');		
+		// Add journal record to process
+		
+		var pb = get_individual(ticket, 'v-wf:ProcessStopped');
+				
+		var journal_record = newJournalRecord(document['@']+'j');
+
+print('3.5 '+journal_record['@']);
+		
+	    journal_record['rdf:type'] = [
+	    {
+	        data: 'v-wf:ProcessStopped',
+	        type: _Uri
+	    }];
+        journal_record['v-s:actor'] = [
+        {
+            data: user_uri,
+            type: _Uri
+        }];
+	    journal_record['rdfs:label'] = pb['rdfs:label'];
+	    journal_record['rdfs:comment'] = pb['rdfs:label'];
+	
+	    logToJournal(ticket, document['@']+'j', journal_record, true);
+print('4');
+	    
+	}
+""" ;
+.
