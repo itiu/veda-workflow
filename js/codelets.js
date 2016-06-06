@@ -137,7 +137,7 @@ function is_in_docflow_and_set_if_true(task)
 function distribution(process, task)
 {}
 
-function create_use_transformation(task)
+function create_use_transformation(process, task)
 {
     try
     {
@@ -156,7 +156,7 @@ function create_use_transformation(task)
                     var document = get_individual(task.ticket, getUri(src_doc_id));
                     if (document)
                     {
-                        var new_items = transformation(task.ticket, document, transform, null, null);
+                        var new_items = transformation(task.ticket, document, transform, null, null, newUri (process.src_data['@']));
                         for (var i = 0; i < new_items.length; i++)
                         {
                             put_individual(ticket, new_items[i], _event_id);
@@ -282,19 +282,22 @@ function onto_rename(ticket, document, execute_script)
         {
             remove_individual(ticket, prev_doc_uri, "");
             put_individual(ticket, document, "");
+            print('$ script_onto_rename:is_replace, ' + prev_doc['@'] + '->' + document['@']);
         }
         else
         {
             if (is_update)
             {
                 put_individual(ticket, document, "");
+            	print('$ script_onto_rename:is_update, ' + prev_doc['@'] + '->' + document['@']);
+            //            print('$ script_onto_rename:is_update, ' + toJson(prev_doc) + '->' + toJson(document));
             }
         }
 
         if (is_replace || is_update)
         {
-            //            print('$ script_onto_rename:is_update, ' + toJson(prev_doc) + '->' + toJson(document));
-            print('$ script_onto_rename:is_update, ' + prev_doc['@'] + '->' + document['@']);
+//            print('$ script_onto_rename:is_update, ' + prev_doc['@'] + '->' + document['@']);
+//                        print('$ script_onto_rename:is_update, ' + toJson(prev_doc) + '->' + toJson(document));
         }
 
 

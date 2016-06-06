@@ -1,5 +1,12 @@
 {
 	"name": "veda-workflow",
 	"description": "veda-workflow",
+        "dependencies": {
+                "veda-server": "4.0.5"
+        },
+        "sourcePaths": [
+                "js"
+        ],
+        "targetType": "library",
         "license": "LGPL v3"
 }
